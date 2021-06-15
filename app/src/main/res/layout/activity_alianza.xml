@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/space">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/header"/>
+
+        <TableLayout
+            android:id="@+id/tlCrearAlianza"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gradient"
+            android:gravity="center"
+            android:visibility="visible">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tvAlianza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/crearAlianza" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tvNombreAlianza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/nombreAlianza" />
+
+                <EditText
+                    android:id="@+id/etNombreAlianza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tvEtiquetaAlianza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/etiquetaAlianza" />
+
+                <EditText
+                    android:id="@+id/etEtiquetaAlianza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:maxLength="8" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btnCrearAlianza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/draw_button"
+                    android:text="@string/crearAlianza" />
+            </TableRow>
+
+        </TableLayout>
+
+        <TableLayout
+            android:id="@+id/tlGestionAlianza"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient"
+            tools:visibility="gone">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tvAlianzaCreada"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/alianzaCreada" />
+
+                <TextView
+                    android:id="@+id/tvNombreAlianzaCreada"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tvMensajeCircular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mensajeCircular" />
+
+                <EditText
+                    android:id="@+id/editTextTextMultiLine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:gravity="start|top"
+                    android:inputType="textMultiLine"
+                    android:maxLength="3000" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btnAbandonarAlianza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/red_button"
+                    android:text="@string/abandonarAlianza" />
+
+                <Button
+                    android:id="@+id/btnDisolverAlianza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/red_button"
+                    android:text="@string/disolverAlianza" />
+            </TableRow>
+        </TableLayout>
+
+
+    </LinearLayout>
+</ScrollView>

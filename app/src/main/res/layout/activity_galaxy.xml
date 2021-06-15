@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/space">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/header"/>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/gradient"
+                android:gravity="center"
+                android:text="@string/sistema" />
+
+        </TableRow>
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/gradient">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/imgAnteriorSistema"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:srcCompat="@drawable/arrow_right" />
+
+                <EditText
+                    android:id="@+id/etSistema"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="2" />
+
+                <ImageView
+                    android:id="@+id/imgSiguienteSistema"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:srcCompat="@drawable/arrow_left" />
+            </TableRow>
+        </TableLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvGalaxia"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</ScrollView>

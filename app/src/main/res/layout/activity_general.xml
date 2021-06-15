@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/space">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/header" />
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/gradient">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/imageView11"
+                    android:layout_width="500px"
+                    android:layout_height="400px"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/vision" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btnVision"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/draw_button"
+                    android:text="@string/vision" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="500px"
+                    android:layout_height="400px"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/resources" />
+
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="500px"
+                    android:layout_height="400px"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/installations" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btnRecursos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/draw_button"
+                    android:text="@string/resources" />
+
+                <Button
+                    android:id="@+id/btnInstalaciones"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/draw_button"
+                    android:text="@string/installations" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/imageView7"
+                    android:layout_width="500px"
+                    android:layout_height="400px"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/investigation" />
+
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="500px"
+                    android:layout_height="400px"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/hangar" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btnInvestigaciones"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/draw_button"
+                    android:text="@string/investigations" />
+
+                <Button
+                    android:id="@+id/btnHangar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/draw_button"
+                    android:text="@string/hangar" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/imageView14"
+                    android:layout_width="500px"
+                    android:layout_height="400px"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/defense" />
+
+                <ImageView
+                    android:id="@+id/imageView16"
+                    android:layout_width="500px"
+                    android:layout_height="400px"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/fleet" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btnDefensas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/draw_button"
+                    android:text="@string/defense" />
+
+                <Button
+                    android:id="@+id/btnFlota"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/draw_button"
+                    android:text="@string/fleet" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/imageView10"
+                    android:layout_width="500px"
+                    android:layout_height="400px"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/galaxy" />
+
+                <ImageView
+                    android:id="@+id/imageView28"
+                    android:layout_width="500px"
+                    android:layout_height="400px"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/alliance" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btnGalaxia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/draw_button"
+                    android:text="@string/galaxia" />
+
+                <Button
+                    android:id="@+id/btnAlianza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/draw_button"
+                    android:text="@string/alianza" />
+            </TableRow>
+
+        </TableLayout>
+
+
+    </LinearLayout>
+</ScrollView>

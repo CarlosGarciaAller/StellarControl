@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/space">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/header" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView12"
+                android:layout_width="400px"
+                android:layout_height="400px"
+                app:srcCompat="@drawable/planet1" />
+
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/tvVisionPlaneta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tvDiametro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/diametro" />
+
+                    <TextView
+                        android:id="@+id/tvVisionDiametro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tvVisionCampos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tvPosicion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/posicion" />
+
+                    <TextView
+                        android:id="@+id/tvVisionPosicion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tvCampos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/temperatura" />
+
+                    <TextView
+                        android:id="@+id/tvVisionTemperatura"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </TableRow>
+            </TableLayout>
+
+        </LinearLayout>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btnRenombrar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/draw_button"
+                android:text="@string/renombrar" />
+
+            <Button
+                android:id="@+id/btnAbandonar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/red_button"
+                android:text="@string/abandonar" />
+        </TableRow>
+
+    </LinearLayout>
+</ScrollView>

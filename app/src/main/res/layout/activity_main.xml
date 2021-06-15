@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/mainspace"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".activities.MainActivity">
+
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/logo" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/cuentaExistente"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/registrarUsuario"
+                android:textSize="24sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btnMainLogin"
+                android:layout_width="265dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:background="@drawable/draw_button"
+                android:maxHeight="60dip"
+                android:minHeight="58dip"
+                android:radius="3dip"
+                android:text="@string/login"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/btnMainRegister"
+                android:layout_width="270dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:background="@drawable/draw_button"
+                android:maxHeight="60dip"
+                android:minHeight="58dip"
+                android:text="@string/register"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp" />
+        </TableRow>
+
+    </TableLayout>
+
+</LinearLayout>

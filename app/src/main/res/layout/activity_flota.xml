@@ -1,0 +1,797 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/space"
+    android:onClick="desplegarPlanetas">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/header" />
+
+        <LinearLayout
+            android:id="@+id/llFlota1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/textView13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Naves civiles" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/imgPequeñaCarga"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/fleet" />
+
+                    <ImageView
+                        android:id="@+id/imgGrandeCarga"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/fleet" />
+
+                    <ImageView
+                        android:id="@+id/imgColonizador"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/fleet" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/textView31"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="0" />
+
+                    <TextView
+                        android:id="@+id/textView32"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="0" />
+
+                    <TextView
+                        android:id="@+id/textView33"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="0" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <EditText
+                        android:id="@+id/etCargaPequeña"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/botton"
+                        android:inputType="number" />
+
+                    <EditText
+                        android:id="@+id/etCargaGrande"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/botton"
+                        android:inputType="number" />
+
+                    <EditText
+                        android:id="@+id/etColonizador"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/botton"
+                        android:inputType="number" />
+
+                </TableRow>
+            </TableLayout>
+
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/textView12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Naves de batalla" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/imgCazadorLigero"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/fleet" />
+
+                    <ImageView
+                        android:id="@+id/imgCazadorPesado"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/fleet" />
+
+                    <ImageView
+                        android:id="@+id/imgCrucero"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/fleet" />
+
+                    <ImageView
+                        android:id="@+id/imgNaveBatalla"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/fleet" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="0" />
+
+                    <TextView
+                        android:id="@+id/textView17"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="0" />
+
+                    <TextView
+                        android:id="@+id/textView25"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="0" />
+
+                    <TextView
+                        android:id="@+id/textView26"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="0" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <EditText
+                        android:id="@+id/etCazadorLigero"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/botton"
+                        android:inputType="number" />
+
+                    <EditText
+                        android:id="@+id/etCazadorPesado"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/botton"
+                        android:inputType="number" />
+
+                    <EditText
+                        android:id="@+id/etCrucero"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/botton"
+                        android:inputType="number" />
+
+                    <EditText
+                        android:id="@+id/editTextNumber5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/botton"
+                        android:inputType="number" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/imgAcorazado"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/fleet" />
+
+                    <ImageView
+                        android:id="@+id/imgBombardero"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/fleet" />
+
+                    <ImageView
+                        android:id="@+id/imgDestructor"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/fleet" />
+
+                    <ImageView
+                        android:id="@+id/imgEstrella"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/fleet" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/textView27"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="0" />
+
+                    <TextView
+                        android:id="@+id/textView28"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="0" />
+
+                    <TextView
+                        android:id="@+id/textView29"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="0" />
+
+                    <TextView
+                        android:id="@+id/textView30"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="0" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <EditText
+                        android:id="@+id/etAcorazado"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/botton"
+                        android:inputType="number" />
+
+                    <EditText
+                        android:id="@+id/etDestructor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/botton"
+                        android:inputType="number" />
+
+                    <EditText
+                        android:id="@+id/etEstrella"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/botton"
+                        android:inputType="number" />
+
+                    <EditText
+                        android:id="@+id/editTextNumber4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/botton"
+                        android:inputType="number" />
+                </TableRow>
+
+            </TableLayout>
+
+            <Button
+                android:id="@+id/btnFlota1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/draw_button"
+                android:text="Siguiente" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llFlota2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                tools:visibility="visible">
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/textView8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Origen" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/textView10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Eridanus" />
+
+                        <TextView
+                            android:id="@+id/textView35"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="[93:1]" />
+
+                    </TableRow>
+
+                </TableLayout>
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/textView9"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Destino" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+
+                        <EditText
+                            android:id="@+id/etSistemaFlota"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="5"
+                            android:inputType="number"
+                            android:text="93" />
+
+                        <EditText
+                            android:id="@+id/etPosicionFlota"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="5"
+                            android:inputType="number"
+                            android:text="9" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+
+                    </TableRow>
+
+                </TableLayout>
+
+            </LinearLayout>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btnAnterior1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/draw_button"
+                    android:text="Anterior" />
+
+                <Button
+                    android:id="@+id/btnFlota2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/draw_button"
+                    android:text="Siguiente" />
+            </TableRow>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llFlota3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/textView24"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Seleccionar mision" />
+            </TableRow>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/imgColonizar"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/colonizar" />
+
+                    <ImageView
+                        android:id="@+id/imgAtacar"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/target" />
+
+                    <ImageView
+                        android:id="@+id/imgTransporte"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/transporte" />
+
+                    <ImageView
+                        android:id="@+id/imgDesplegar"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        app:srcCompat="@drawable/desplegar" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/textView15"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:gravity="center"
+                        android:text="Colonizar" />
+
+                    <TextView
+                        android:id="@+id/textView16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:gravity="center"
+                        android:text="Atacar" />
+
+                    <TextView
+                        android:id="@+id/textView18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:gravity="center"
+                        android:text="Transportar" />
+
+                    <TextView
+                        android:id="@+id/textView19"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:gravity="center"
+                        android:text="Desplegar" />
+                </TableRow>
+            </TableLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TableLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/textView20"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Mision: " />
+
+                        <TextView
+                            android:id="@+id/textView21"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/textView22"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Descripcion" />
+                    </TableRow>
+
+                </TableLayout>
+
+                <TableLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/textView23"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Cargar recursos" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp">
+
+                        <ImageView
+                            android:id="@+id/imageView9"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/metal" />
+
+                        <EditText
+                            android:id="@+id/editTextNumber"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="number" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp">
+
+                        <ImageView
+                            android:id="@+id/imageView13"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/cristal" />
+
+                        <EditText
+                            android:id="@+id/editTextNumber2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="number" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp">
+
+                        <ImageView
+                            android:id="@+id/imageView21"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/fuel" />
+
+                        <EditText
+                            android:id="@+id/editTextNumber3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="number" />
+                    </TableRow>
+
+                </TableLayout>
+
+            </LinearLayout>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btnAnterior2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/draw_button"
+                    android:text="Anterior" />
+
+                <Button
+                    android:id="@+id/btnEnviarFlota"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/draw_button"
+                    android:text="Despegar" />
+            </TableRow>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

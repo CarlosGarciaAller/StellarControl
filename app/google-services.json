@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "675381552100",
+    "firebase_url": "https://stellar-control.firebaseio.com",
+    "project_id": "stellar-control",
+    "storage_bucket": "stellar-control.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:675381552100:android:ac25c8d9feb01944ae5df1",
+        "android_client_info": {
+          "package_name": "com.carlos.stellarControl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "675381552100-4p8posncactu8d7l887n88gup2i99m6i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcLE23kWo9uj91d1pZvu58TtCgBsf6Fyg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "675381552100-4p8posncactu8d7l887n88gup2i99m6i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:675381552100:android:f4ddd8094de00a2dae5df1",
+        "android_client_info": {
+          "package_name": "com.carlos.stellarcontrol"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "675381552100-4p8posncactu8d7l887n88gup2i99m6i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcLE23kWo9uj91d1pZvu58TtCgBsf6Fyg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "675381552100-4p8posncactu8d7l887n88gup2i99m6i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
