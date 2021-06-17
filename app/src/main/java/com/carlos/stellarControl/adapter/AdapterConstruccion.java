@@ -51,19 +51,20 @@ public class AdapterConstruccion extends FirestoreRecyclerAdapter<Construccion, 
 
         switch(MainConstruccion.construccion){
             case "Recursos":
-                docRef = Global.fFirestore.collection("Recursos_Jugador").document("zQ0EXyScIyjeKsfV9msX").collection("Recursos_Planeta").document(construccion.getNombre());
+                docRef = Global.fFirestore.collection("Recursos_Jugador").document(Global.idPlanetaSeleccionado).collection("Recursos_Planeta").document(construccion.getNombre());
                 break;
             case "Instalaciones":
-                docRef = Global.fFirestore.collection("Instalaciones_Jugador").document("zQ0EXyScIyjeKsfV9msX").collection("Instalaciones_Planeta").document(construccion.getNombre());
+                docRef = Global.fFirestore.collection("Instalaciones_Jugador").document(Global.idPlanetaSeleccionado).collection("Instalaciones_Planeta").document(construccion.getNombre());
                 break;
             case "Investigaciones":
                 docRef = Global.fFirestore.collection("Investigaciones_Jugador").document(Global.fAuth.getUid()).collection("Investigaciones_Jugador").document(construccion.getNombre());
                 break;
             case "Naves":
-                docRef = Global.fFirestore.collection("Naves_Jugador").document("zQ0EXyScIyjeKsfV9msX").collection("Naves_Planeta").document(construccion.getNombre());
+                Log.e("Check",Global.idPlanetaSeleccionado);
+                docRef = Global.fFirestore.collection("Naves_Jugador").document(Global.idPlanetaSeleccionado).collection("Naves_Planeta").document(construccion.getNombre());
                 break;
             case "Defensas":
-                docRef = Global.fFirestore.collection("Defensas_Jugador").document("zQ0EXyScIyjeKsfV9msX").collection("Defensas_Planeta").document(construccion.getNombre());
+                docRef = Global.fFirestore.collection("Defensas_Jugador").document(Global.idPlanetaSeleccionado).collection("Defensas_Planeta").document(construccion.getNombre());
                 break;
         }
 

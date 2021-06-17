@@ -112,11 +112,11 @@ public class MainRegistro extends AppCompatActivity {
         Map mapSistema = new HashMap<String,Object>();
 
         int sistemaPlaneta = aleatorio.nextInt(100);
-        int posicionSistema = aleatorio.nextInt(16);
+        int posicionSistema = aleatorio.nextInt(10);
 
         mapSistema.put("id",idPlaneta);
         mapSistema.put("nombre","Planeta principal");
-        mapSistema.put("posicion",sistemaPlaneta);
+        mapSistema.put("posicion",posicionSistema);
         mapSistema.put("usuario",usuario);
 
         db.collection("Sistemas").document(String.valueOf(sistemaPlaneta)).collection("Planetas_Sistemas").document(String.valueOf(posicionSistema)).set(mapSistema);
@@ -157,11 +157,11 @@ public class MainRegistro extends AppCompatActivity {
                 "Almacen de deuterio",
         };
 
-        Integer[] costeMetal = {60, 48, 225, 75, 1000, 1000, 1000};
+        Integer[] costeMetal = {60, 48, 225, 75, 1000, 0, 0};
 
-        Integer[] costeCristal = {15, 24, 75, 75, 1000, 1000, 1000};
+        Integer[] costeCristal = {15, 24, 75, 75, 1000, 500, 0};
 
-        Integer[] costeDeuterio = {60, 48, 225, 75, 1000, 1000, 1000};
+        Integer[] costeDeuterio = {60, 48, 225, 75, 1000, 0, 0};
 
         Integer[] costeEnergia = {11, 11, 22, 0, 0, 0, 0};
 
@@ -186,18 +186,19 @@ public class MainRegistro extends AppCompatActivity {
                 "Hangar",
                 "Laboratorio de investigacion",
                 "Fabrica de robots",
-                "Terraformer"
+                "Terraformer",
+                "Sensor phalanx",
         };
 
-        Integer[] costeMetal = {1000000, 400, 200, 400, 0};
+        Integer[] costeMetal = {1000000, 400, 200, 400, 0, 20000};
 
-        Integer[] costeCristal = {500000 ,200, 400, 120, 50000};
+        Integer[] costeCristal = {500000 ,200, 400, 120, 50000, 40000};
 
-        Integer[] costeDeuterio = {100000 ,100, 200, 225, 100000};
+        Integer[] costeDeuterio = {100000 ,100, 200, 225, 100000, 20000};
 
         Integer[] costeEnergia = {0, 0, 0, 0, 0, 0, 1000};
 
-        Integer[] nivel = {0, 0, 0, 0, 0};
+        Integer[] nivel = {0, 0, 0, 0, 0, 0};
 
         for (int i = 0; i < instalaciones.length; i++){
             mapInstalaciones.put("nombre",instalaciones[i]);
@@ -206,7 +207,7 @@ public class MainRegistro extends AppCompatActivity {
             mapInstalaciones.put("costeDeuterio",costeDeuterio[i]);
             mapInstalaciones.put("costeEnergia",costeEnergia[i]);
             mapInstalaciones.put("cantidad",nivel[i]);
-            db.collection("Instalaciones_Jugador").document(fAuth.getUid()).collection("Instalaciones_Planeta").document(instalaciones[i]).set(mapInstalaciones);
+            db.collection("Instalaciones_Jugador").document(idPlaneta).collection("Instalaciones_Planeta").document(instalaciones[i]).set(mapInstalaciones);
         }
     }
 
