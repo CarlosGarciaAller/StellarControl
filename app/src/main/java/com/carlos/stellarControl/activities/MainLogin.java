@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.carlos.stellarControl.R;
+import com.carlos.stellarControl.utils.Global;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -67,8 +68,9 @@ public class MainLogin extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             intent = new Intent(MainLogin.this, MainGeneral.class);
                             intent.putExtra("anteriorActividad", "login");
-                            //intent.putExtra("nombrePlaneta", Global.planetaSeleccionado);
+                            intent.putExtra("nombrePlaneta", Global.planetaSeleccionado);
                             //Toast.makeText(MainLogin.this, "Login correct", Toast.LENGTH_SHORT).show();
+
                             startActivity(intent);
                         } else {
                             Toast.makeText(MainLogin.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();

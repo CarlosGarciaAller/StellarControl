@@ -18,20 +18,20 @@
 
             <TextView
                 android:id="@+id/tvPosicionSistema"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/posicion" />
 
             <TextView
                 android:id="@+id/tvPosicionPlaneta"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="25dp" />
 
             <ImageView
                 android:id="@+id/imageView3"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="25dp"
@@ -39,7 +39,7 @@
 
             <TextView
                 android:id="@+id/tvPlanetaSistema"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/nombreSistema" />
 
@@ -53,13 +53,13 @@
 
             <TextView
                 android:id="@+id/tvUsuarioSistema"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/usuarioSistema" />
 
             <TextView
                 android:id="@+id/tvNombreJugador"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="25dp" />

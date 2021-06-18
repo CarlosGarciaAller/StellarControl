@@ -1,6 +1,7 @@
 package com.carlos.stellarControl.adapter;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.carlos.stellarControl.R;
+import com.carlos.stellarControl.activities.MainFlota;
 import com.carlos.stellarControl.model.Planeta;
 import com.carlos.stellarControl.utils.Global;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -33,6 +35,7 @@ public class AdapterGalaxia extends FirestoreRecyclerAdapter<Planeta, AdapterGal
      */
 
     private DocumentReference docRef;
+    Intent intent;
 
     public AdapterGalaxia(@NonNull FirestoreRecyclerOptions<Planeta> options) {
         super(options);
@@ -83,7 +86,7 @@ public class AdapterGalaxia extends FirestoreRecyclerAdapter<Planeta, AdapterGal
         public ViewHolder(@NonNull View itemView){
             super(itemView);
 
-            this.cantidad = itemView.findViewById(R.id.etCantidad);
+            this.cantidad = itemView.findViewById(R.id.etCantidadEnviar);
             this.nombre = itemView.findViewById(R.id.tvNombrePlaneta);
             this.posicion = itemView.findViewById(R.id.tvPosicionPlaneta);
             this.usuario = itemView.findViewById(R.id.tvNombreJugador);
@@ -94,30 +97,27 @@ public class AdapterGalaxia extends FirestoreRecyclerAdapter<Planeta, AdapterGal
                 @Override
                 public void onClick(View v){
                     AlertDialog.Builder mBuilder = new AlertDialog.Builder(v.getContext());
-                    if (!usuario.getText().toString().equals("")) {
+                    if (!usuario.getText().toString().equals(" ")) {
                         listAcciones = new String[] {"Espiar","Atacar","Agregar"};
                     }
-
                     else{
                         listAcciones = new String[] {"Colonizar"};
                     }
-
                     mBuilder.setIcon(R.drawable.icon);
                     mBuilder.setTitle("Acciones");
 
                     mBuilder.setItems(listAcciones, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int i) {
-                            switch(listAcciones[i]){
-                                case "Espiar":
-                                    Toast.makeText(v.getContext(), "espiar", Toast.LENGTH_SHORT).show();
-                                    break;
-                                case "Atacar":
-                                    Toast.makeText(v.getContext(), "atacar", Toast.LENGTH_SHORT).show();
-                                    break;
-                                case "Agregar":
-                                    Toast.makeText(v.getContext(), "agregar", Toast.LENGTH_SHORT).show();
-                                    break;
+                            if (listAcciones[i]=="Colonizar" || listAcciones[i]=="Atacar"){
+                                intent = new Intent(v.getContext(), MainFlota.class);
+                                v.getContext().startActivity(intent);
+                            }
+                            if(listAcciones[i]=="Espiar"){
+                                Toast.makeText(v.getContext(), "espiar", Toast.LENGTH_SHORT).show();
+                            }
+                            if(listAcciones[i]=="Agregar"){
+                                Toast.makeText(v.getContext(), "agregar", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

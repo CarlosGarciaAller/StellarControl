@@ -121,7 +121,7 @@ public class AdapterConstruccion extends FirestoreRecyclerAdapter<Construccion, 
             this.nivel = itemView.findViewById(R.id.tvNivel);
             this.textCantidad = itemView.findViewById(R.id.tvTextCantidad);
             this.textNivel = itemView.findViewById(R.id.tvTextNivel);
-            this.etCantidad = itemView.findViewById(R.id.etCantidad);
+            this.etCantidad = itemView.findViewById(R.id.etCantidadEnviar);
             this.btnConstruir = itemView.findViewById(R.id.btnConstruir);
             this.btnDemoler = itemView.findViewById(R.id.btnDemoler);
             this.descripcion = new TextView(itemView.getContext());

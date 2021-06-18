@@ -34,6 +34,20 @@ public class MainActivity extends AppCompatActivity {
         btnMainRegister = (Button) findViewById(R.id.btnMainRegister);
         imgLogo = (ImageView) findViewById(R.id.imgLogo);
 
+        /*Map mapSistemas = new HashMap<String,Object>();
+
+        mapSistemas.put("idPlanetaJugador"," ");
+        mapSistemas.put("nombrePlaneta"," ");
+        mapSistemas.put("usuario"," ");
+
+        for (int i = 1; i<=99; i++){
+            int j = 1;
+            for (j = 1; j<=9; j++){
+                mapSistemas.put("posicion",j);
+                fFirestore.collection("Sistemas").document(String.valueOf(i)).collection("Planetas_Sistemas").document(String.valueOf(j)).set(mapSistemas);
+            }
+        }*/
+
         btnMainLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

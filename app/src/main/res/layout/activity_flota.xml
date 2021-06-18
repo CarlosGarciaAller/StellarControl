@@ -10,403 +10,60 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="vertical">
 
         <include layout="@layout/header" />
 
-        <LinearLayout
-            android:id="@+id/llFlota1"
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/gradient"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:gravity="center">
 
-            <TableLayout
+            <TextView
+                android:id="@+id/tvTituloFlota"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center">
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="@string/flota"
+                android:textSize="24sp" />
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center">
+        </TableRow>
 
-                    <TextView
-                        android:id="@+id/textView13"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Naves civiles" />
-                </TableRow>
+        <RelativeLayout
+            android:id="@+id/rlFlota"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:visibility="gone">
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvFlota"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/botton">
 
-                    <ImageView
-                        android:id="@+id/imgPequeñaCarga"
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/fleet" />
+            </androidx.recyclerview.widget.RecyclerView>
 
-                    <ImageView
-                        android:id="@+id/imgGrandeCarga"
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/fleet" />
+        </RelativeLayout>
 
-                    <ImageView
-                        android:id="@+id/imgColonizador"
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/fleet" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/textView31"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="0" />
-
-                    <TextView
-                        android:id="@+id/textView32"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="0" />
-
-                    <TextView
-                        android:id="@+id/textView33"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="0" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
-
-                    <EditText
-                        android:id="@+id/etCargaPequeña"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/botton"
-                        android:inputType="number" />
-
-                    <EditText
-                        android:id="@+id/etCargaGrande"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/botton"
-                        android:inputType="number" />
-
-                    <EditText
-                        android:id="@+id/etColonizador"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/botton"
-                        android:inputType="number" />
-
-                </TableRow>
-            </TableLayout>
-
-            <TableLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center">
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/textView12"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Naves de batalla" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:id="@+id/imgCazadorLigero"
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/fleet" />
-
-                    <ImageView
-                        android:id="@+id/imgCazadorPesado"
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/fleet" />
-
-                    <ImageView
-                        android:id="@+id/imgCrucero"
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/fleet" />
-
-                    <ImageView
-                        android:id="@+id/imgNaveBatalla"
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/fleet" />
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/textView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="0" />
-
-                    <TextView
-                        android:id="@+id/textView17"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="0" />
-
-                    <TextView
-                        android:id="@+id/textView25"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="0" />
-
-                    <TextView
-                        android:id="@+id/textView26"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="0" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
-
-                    <EditText
-                        android:id="@+id/etCazadorLigero"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/botton"
-                        android:inputType="number" />
-
-                    <EditText
-                        android:id="@+id/etCazadorPesado"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/botton"
-                        android:inputType="number" />
-
-                    <EditText
-                        android:id="@+id/etCrucero"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/botton"
-                        android:inputType="number" />
-
-                    <EditText
-                        android:id="@+id/editTextNumber5"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/botton"
-                        android:inputType="number" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:id="@+id/imgAcorazado"
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/fleet" />
-
-                    <ImageView
-                        android:id="@+id/imgBombardero"
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/fleet" />
-
-                    <ImageView
-                        android:id="@+id/imgDestructor"
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/fleet" />
-
-                    <ImageView
-                        android:id="@+id/imgEstrella"
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/fleet" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/textView27"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="0" />
-
-                    <TextView
-                        android:id="@+id/textView28"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="0" />
-
-                    <TextView
-                        android:id="@+id/textView29"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="0" />
-
-                    <TextView
-                        android:id="@+id/textView30"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="0" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
-
-                    <EditText
-                        android:id="@+id/etAcorazado"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/botton"
-                        android:inputType="number" />
-
-                    <EditText
-                        android:id="@+id/etDestructor"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/botton"
-                        android:inputType="number" />
-
-                    <EditText
-                        android:id="@+id/etEstrella"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/botton"
-                        android:inputType="number" />
-
-                    <EditText
-                        android:id="@+id/editTextNumber4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/botton"
-                        android:inputType="number" />
-                </TableRow>
-
-            </TableLayout>
-
-            <Button
-                android:id="@+id/btnFlota1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/draw_button"
-                android:text="Siguiente" />
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/btnFlota1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/draw_button"
+            android:gravity="center"
+            android:text="Siguiente" />
 
         <LinearLayout
-            android:id="@+id/llFlota2"
+            android:id="@+id/llFlota1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/gradient"
@@ -535,7 +192,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/llFlota3"
+            android:id="@+id/llFlota2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/gradient"

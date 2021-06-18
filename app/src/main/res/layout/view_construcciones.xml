@@ -205,7 +205,7 @@
                     android:gravity="center">
 
                     <EditText
-                        android:id="@+id/etCantidad"
+                        android:id="@+id/etCantidadEnviar"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:ems="10"

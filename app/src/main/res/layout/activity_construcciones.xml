@@ -15,14 +15,15 @@
         <include layout="@layout/header" />
 
         <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/gradient"
             android:gravity="center">
 
             <TextView
                 android:id="@+id/tvTituloConstruccion"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
@@ -33,13 +34,14 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvConstrucciones"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/gradient" />
+                android:background="@drawable/botton" />
         </RelativeLayout>
 
     </LinearLayout>
