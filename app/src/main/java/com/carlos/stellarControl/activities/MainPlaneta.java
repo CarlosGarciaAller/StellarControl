@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -82,7 +81,7 @@ public class MainPlaneta extends AppCompatActivity {
 
         //Fin variables locales
 
-        Toast.makeText(MainPlaneta.this, Global.idPlanetaSeleccionado, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(MainPlaneta.this, Global.idPlanetaSeleccionado, Toast.LENGTH_SHORT).show();
 
         Global.imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,14 +181,16 @@ public class MainPlaneta extends AppCompatActivity {
         });
 
         new Thread(new Runnable(){
-            Boolean isStarted = true;
+
             @Override
             public void run() {
-                while(isStarted){
+                //while(Integer.parseInt(String.valueOf(Global.tvMetal.getText())) <= Global.capacidadMetal){
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            //Global.producirRecursos(MainPlaneta.this);
+                            Global.producirRecursos("Mina de metal", "metal");
+                            Global.producirRecursos("Mina de metal", "cristal");
+                            Global.producirRecursos("Mina de metal", "deuterio");
                         }
                     });
                     try{
@@ -197,7 +198,7 @@ public class MainPlaneta extends AppCompatActivity {
                     } catch(InterruptedException e){
                         e.printStackTrace();
                     }
-                }
+                //}
             }
         }).start();
     }

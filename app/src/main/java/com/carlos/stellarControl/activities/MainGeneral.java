@@ -2,6 +2,7 @@ package com.carlos.stellarControl.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -220,10 +221,102 @@ public class MainGeneral extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
+
+        /*Global.docRef = Global.fFirestore.collection("Recursos_Jugador").document(Global.idPlanetaSeleccionado).collection("Recursos_Planeta").document("Mina de metal");
+        Global.docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>(){
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null && document.exists()) {
+                        Log.d("Nivel de metal", String.valueOf(document.getLong("cantidad").intValue()));
+
+                    } else {
+                        Log.d("Check", "No such document");
+                    }
+                }
+            }
+        });*/
+
+        Log.d("Metal disponible", Global.tvMetal.getText().toString());
+        Log.d("Capacidad Metal", Global.capacidadMetal.toString());
+
+        if (Integer.parseInt(String.valueOf(Global.tvMetal.getText())) < Global.cantidadMetal){
+            Log.d("Metal", "Espacio disponible");
+        }
+        else{
+            Log.d("Metal", "Lleno");
+        }
+
+        Metal metal = new Metal();
+        metal.start();
+
+        Cristal cristal = new Cristal();
+        cristal.start();
+
+        Deuterio deuterio = new Deuterio();
+        deuterio.start();
     }
 
     @Override
     protected void onStop(){
         super.onStop();
+    }
+
+    class Metal extends Thread {
+        @Override
+        public void run() {
+            while(Global.cantidadMetal <= Global.capacidadMetal){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Global.producirRecursos("Mina de metal", "metal");
+                    }
+                });
+                try{
+                    Thread.sleep(1000);
+                } catch(InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    class Cristal extends Thread {
+        @Override
+        public void run() {
+            while(Global.cantidadCristal <= Global.capacidadCristal){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Global.producirRecursos("Mina de metal", "cristal");
+                    }
+                });
+                try{
+                    Thread.sleep(2000);
+                } catch(InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    class Deuterio extends Thread {
+        @Override
+        public void run() {
+            while(Global.cantidadDeuterio <= Global.capacidadDeuterio){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Global.producirRecursos("Mina de metal", "deuterio");
+                    }
+                });
+                try{
+                    Thread.sleep(3000);
+                } catch(InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

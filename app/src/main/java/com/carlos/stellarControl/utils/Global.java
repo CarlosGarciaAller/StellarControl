@@ -3,6 +3,7 @@ package com.carlos.stellarControl.utils;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -37,7 +38,7 @@ public class Global extends AppCompatActivity {
     private static Intent intent;
     public static FirebaseAuth fAuth;
     public static FirebaseFirestore fFirestore;
-    public static DocumentReference docRef;
+    public static DocumentReference docRef, docNivel;
     static Query query;
     public static ArrayList<String> selectPlanetas = new ArrayList<>();
     public static ArrayList<String> nombresPlanetas = new ArrayList<>();
@@ -45,57 +46,64 @@ public class Global extends AppCompatActivity {
     public static TextView tvMetal, tvCristal, tvDeuterio, tvPlaneta, tvCoordenadas;
     public static LinearLayout listPlanetas;
     public static String jugador, planetaSeleccionado, idPlanetaSeleccionado;
-    public static Integer sistemaSeleccionado, capacidad, cont, capacidadMetal, capacidadCristal, capacidadDeuterio = 0;
+    public static Integer sistemaSeleccionado, capacidad, incremento, nivel,
+            cantidadMetal, cantidadCristal, cantidadDeuterio,
+            capacidadMetal, capacidadCristal, capacidadDeuterio = 0;
     public static boolean cambiar = false;
     private static boolean isStarted;
-
-    /*public static void setPlanetaSeleccionado(String planetaSeleccionado) {
-        Global.planetaSeleccionado = planetaSeleccionado;
-    }
-
-    public static String getPlanetaSeleccionado() {
-        return planetaSeleccionado;
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.header);
+    }
+    public static void producirRecursos(String mina, String recurso){
 
-        Toast.makeText(Global.this, "It works!", Toast.LENGTH_SHORT).show();
-
-        /*new Thread(new Runnable(){
-
+        docNivel = fFirestore.collection("Recursos_Jugador").document(idPlanetaSeleccionado).collection("Recursos_Planeta").document(mina);
+        docNivel.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>(){
             @Override
-            public void run() {
-                while(isStarted){
-                    cont++;
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            producirRecursos();
-                        }
-                    });
-                    try{
-                        Thread.sleep(1000);
-                    } catch(InterruptedException e){
-                        e.printStackTrace();
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null && document.exists()) {
+                            nivel = document.getLong("cantidad").intValue();
+                    } else {
+                        Log.d("Check", "No such document");
                     }
                 }
             }
-        }).start();*/
-    }
+        });
 
-    public static void producirRecursos(Activity main){
-        isStarted = true;
-        //Integer metal = 200;
-        if(Integer.parseInt(String.valueOf(tvMetal.getText())) < capacidadMetal){
-            Toast.makeText(main, "Produciendo", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            Toast.makeText(main, "NO Produciendo", Toast.LENGTH_SHORT).show();
-        }
-        fFirestore.collection("Planetas").document(fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador").document("7vEN2CxIGEeMxCSyirF3").update("metal",Integer.parseInt(String.valueOf(tvMetal.getText()))+cont);
+        docRef = fFirestore.collection("Planetas").document(fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador").document(idPlanetaSeleccionado);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>(){
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null && document.exists()) {
+                        if ("metal".equals(recurso)){
+                            incremento = nivel * 3;
+                        }
+                        if ("cristal".equals(recurso)){
+                            incremento = nivel * 2;
+                        }
+                        if ("metal".equals(recurso)){
+                            incremento = nivel * 1;
+                        }
+                        if (document.getLong(recurso) == 0){
+                            fFirestore.collection("Planetas").document(fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador").document(idPlanetaSeleccionado).update(
+                                    recurso,0+incremento);
+                        }
+                        else{
+                            fFirestore.collection("Planetas").document(fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador").document(idPlanetaSeleccionado).update(
+                                    recurso,document.getLong(recurso).intValue()+incremento);
+                        }
+                    } else {
+                        Log.d("Check", "No such document");
+                    }
+                }
+            }
+        });
     }
 
     public static void cargarPlanetas(){
@@ -121,9 +129,21 @@ public class Global extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
+                        cantidadMetal = document.getLong("metal").intValue();
                         tvMetal.setText(String.valueOf(document.getLong("metal").intValue()));
+                        if (Integer.parseInt(String.valueOf(tvMetal.getText())) >= capacidadMetal){
+                            tvMetal.setTextColor(Color.parseColor("#FF0000"));
+                        }
+                        cantidadCristal = document.getLong("cristal").intValue();
                         tvCristal.setText(String.valueOf(document.getLong("cristal").intValue()));
+                        if (Integer.parseInt(String.valueOf(tvCristal.getText())) >= capacidadCristal){
+                            tvCristal.setTextColor(Color.parseColor("#FF0000"));
+                        }
+                        cantidadDeuterio = document.getLong("deuterio").intValue();
                         tvDeuterio.setText(String.valueOf(document.getLong("deuterio").intValue()));
+                        if (Integer.parseInt(String.valueOf(tvDeuterio.getText())) >= capacidadDeuterio){
+                            tvDeuterio.setTextColor(Color.parseColor("#FF0000"));
+                        }
                     }
                 }
             }

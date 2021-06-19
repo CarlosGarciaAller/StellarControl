@@ -22,6 +22,8 @@
         </activity>
         <activity android:name=".activities.MainRegistro" android:screenOrientation="landscape">
         </activity>
+        <activity android:name=".activities.MainLoading" android:screenOrientation="landscape">
+        </activity>
         <activity android:name=".activities.MainGeneral" android:screenOrientation="landscape">
         </activity>
         <activity android:name=".activities.MainUsuario" android:screenOrientation="landscape">

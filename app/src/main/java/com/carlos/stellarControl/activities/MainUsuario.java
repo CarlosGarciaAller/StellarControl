@@ -57,12 +57,6 @@ public class MainUsuario extends AppCompatActivity {
 
         tvEmail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
-        //Mostrar el planeta seleccionado en el selecctor de planetas
-        Global.mostrarPlanetaSeleccionado(Global.fFirestore.collection("Planetas").document(Global.fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador").whereEqualTo("nombre",Global.planetaSeleccionado));
-
-        //Cargar los planetas del jugador en el selector
-        Global.cargarPlanetas();
-
         Toast.makeText(MainUsuario.this, Global.idPlanetaSeleccionado, Toast.LENGTH_SHORT).show();
 
         Global.imgBack.setOnClickListener(new View.OnClickListener() {
@@ -203,6 +197,12 @@ public class MainUsuario extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
+
+        //Mostrar el planeta seleccionado en el selecctor de planetas
+        Global.mostrarPlanetaSeleccionado(Global.fFirestore.collection("Planetas").document(Global.fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador").whereEqualTo("nombre",Global.planetaSeleccionado));
+
+        //Cargar los planetas del jugador en el selector
+        Global.cargarPlanetas();
     }
 
     @Override
