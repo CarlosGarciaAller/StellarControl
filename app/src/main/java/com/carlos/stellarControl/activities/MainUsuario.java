@@ -3,10 +3,12 @@ package com.carlos.stellarControl.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,9 +21,10 @@ import com.carlos.stellarControl.utils.Global;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 public class MainUsuario extends AppCompatActivity {
@@ -38,12 +41,24 @@ public class MainUsuario extends AppCompatActivity {
         setContentView(R.layout.activity_usuario);
 
         //Variables globales
+
         Global.fAuth = FirebaseAuth.getInstance();
         Global.fFirestore = FirebaseFirestore.getInstance();
 
         Global.mensajes = (ImageView) findViewById(R.id.imgMensajes);
         Global.settings = (ImageView) findViewById(R.id.imgSettings);
         Global.imgBack = (ImageView) findViewById(R.id.imgBack);
+
+        Global.tvMetal = (TextView) findViewById(R.id.tvMetal);
+        Global.tvCristal = (TextView) findViewById(R.id.tvCristal);
+        Global.tvDeuterio = (TextView) findViewById(R.id.tvDeuterio);
+        Global.tvPlaneta = (TextView) findViewById(R.id.tvPlaneta);
+        Global.tvCoordenadas = (TextView) findViewById(R.id.tvCoordenadas);
+        Global.listPlanetas = (LinearLayout) findViewById(R.id.listPlanetas);
+
+        //Fin variables globales
+
+        //variables locales
 
         tvNombre = (TextView) findViewById(R.id.tvNombre);
         tvEmail = (TextView) findViewById(R.id.tvEmail);
@@ -53,6 +68,8 @@ public class MainUsuario extends AppCompatActivity {
 
         etNombreUsuario = new EditText(MainUsuario.this);
         etPassword = new EditText(MainUsuario.this);
+
+        //Fin variables locales
         //String pass = FirebaseAuth.getInstance().getCurrentUser().get;
 
         tvEmail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
@@ -155,43 +172,49 @@ public class MainUsuario extends AppCompatActivity {
         btnBaja.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                eliminarUsuario();
-            }
-        });
-    }
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainUsuario.this);
+                boolean eliminado = false;
 
-    public void eliminarUsuario(){
-        /*AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainUsuario.this);
-        mBuilder.setTitle("Eliminar cuenta");
-        mBuilder.setMessage("Verifique con su contraseña de acceso para eliminar la cuenta. Una vez eliminada no será posible recuperarla");
-        mBuilder.setIcon(R.drawable.common_google_signin_btn_icon_dark);
-        mBuilder.setPositiveButton("Eliminar",null);
+                mBuilder.setTitle("¿Está seguro de querer darse de baja");
+                mBuilder.setMessage("Todos sus datos serán eliminados sin posibilidad de recuperarse");
+                mBuilder.setIcon(R.drawable.icon);
+                mBuilder.setPositiveButton("Aceptar",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        CollectionReference docInvestigaciones = Global.fFirestore.collection("Investigaciones_Jugador").document(Global.fAuth.getCurrentUser().getUid()).collection("Investigaciones_Jugador");
+                        for (int i = 0; i < Global.investigaciones.length; i++){
+                            docInvestigaciones.document(Global.investigaciones[i]).delete();
+                        }
+                        CollectionReference docPlanetas = Global.fFirestore.collection("Planetas").document(Global.fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador");
+                        docPlanetas.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (DocumentSnapshot document : task.getResult()) {
+                                        if (document != null && document.exists()) {
+                                            Log.d("Borrando planeta", document.getString("id"));
+                                            Global.abandonarPlaneta(document.getString("id"), document.getLong("sistema").intValue(), document.getLong("posicion").intValue());
+                                        } else {
+                                            Log.d("Check", "No such document");
+                                        }
+                                    }
+                                }
 
-        AlertDialog mDialog = mBuilder.create();
-        mDialog.show();*/
-
-        global.fFirestore.collection("Planetas").document(global.fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador");
-
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        global.fFirestore.collection("Recursos").document(document.getId()).delete();
-                        global.fFirestore.collection("Instalaciones").document(document.getId()).delete();
-                        global.fFirestore.collection("Naves").document(global.fAuth.getUid()).delete();
-                        global.fFirestore.collection("Defensas").document(global.fAuth.getUid()).delete();
+                            }
+                        });
+                        Global.fFirestore.collection("Usuarios").document(Global.fAuth.getCurrentUser().getUid()).delete();
                     }
-                }
+                });
+                mBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog mDialog = mBuilder.create();
+                mDialog.show();
             }
         });
-        global.fFirestore.collection("Investigaciones").document(global.fAuth.getUid()).delete();
-        global.fFirestore.collection("Planetas").document(global.fAuth.getUid()).delete();
-        global.fFirestore.collection("Usuarios").document(global.fAuth.getUid()).delete();
-
-        global.fAuth.signOut();
-        intent = new Intent(MainUsuario.this, MainActivity.class);
-        startActivity(intent);
     }
 
     @Override
@@ -208,5 +231,19 @@ public class MainUsuario extends AppCompatActivity {
     @Override
     protected void onStop(){
         super.onStop();
+    }
+
+    public void eliminarUsuario(){
+        Global.fAuth.getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d("TAG", "Usuario eliminado :( Gracias por jugar y hasta la proxima.");
+                }
+            }
+        });
+        //Global.fAuth.signOut();
+        intent = new Intent(MainUsuario.this, MainActivity.class);
+        startActivity(intent);
     }
 }

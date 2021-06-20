@@ -46,7 +46,7 @@ public class MainLoading extends AppCompatActivity {
                 //Toast.makeText(MainLogin.this, "Login correct", Toast.LENGTH_SHORT).show();
                 startActivity(intent);
             }
-        },5000);
+        },3000);
     }
 
     @Override

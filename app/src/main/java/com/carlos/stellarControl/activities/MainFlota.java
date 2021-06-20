@@ -2,6 +2,7 @@ package com.carlos.stellarControl.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,7 +10,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,21 +23,23 @@ import com.carlos.stellarControl.adapter.AdapterNaves;
 import com.carlos.stellarControl.model.Construccion;
 import com.carlos.stellarControl.utils.Global;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
 
 public class MainFlota extends AppCompatActivity {
     private RecyclerView rvFlota;
     private AdapterNaves adaptadorNaves;
     RelativeLayout rlFlota;
     LinearLayout llFlota1, llFlota2;
+    TextView tvPlanetaOrigen, tvCoordenadasOrigen, tvMision;
     Button btnFlota1, btnFlota2, btnAnterior1, btnAnterior2 ,btnAccesoRapido, btnEnviarFlota;
-    EditText etSistemaFlota, etPosicionFlota;
+    EditText etSistemaFlota, etPosicionFlota, etMetal, etCristal, etDeuterio;
+    ImageView imgColonizar, imgAtacar, imgTransportar, imgDesplegar;
     Intent intent;
     Query query;
 
@@ -68,6 +73,10 @@ public class MainFlota extends AppCompatActivity {
         llFlota1 = (LinearLayout) findViewById(R.id.llFlota1);
         llFlota2 = (LinearLayout) findViewById(R.id.llFlota2);
 
+        tvPlanetaOrigen = (TextView) findViewById(R.id.tvPlanetaOrigen);
+        tvCoordenadasOrigen = (TextView) findViewById(R.id.tvCoordenadasOrigen);
+        tvMision = (TextView) findViewById(R.id.tvMision);
+
         btnFlota1 = (Button) findViewById(R.id.btnFlota1);
         btnFlota2 = (Button) findViewById(R.id.btnFlota2);
         btnAnterior1 = (Button) findViewById(R.id.btnAnterior1);
@@ -77,6 +86,14 @@ public class MainFlota extends AppCompatActivity {
 
         etSistemaFlota = (EditText) findViewById(R.id.etSistemaFlota);
         etPosicionFlota = (EditText) findViewById(R.id.etPosicionFlota);
+        etMetal = (EditText) findViewById(R.id.etMetal);
+        etCristal = (EditText) findViewById(R.id.etCristal);
+        etDeuterio = (EditText) findViewById(R.id.etDeuterio);
+
+        imgColonizar = (ImageView) findViewById(R.id.imgColonizar);
+        imgAtacar = (ImageView) findViewById(R.id.imgAtacar);
+        imgTransportar = (ImageView) findViewById(R.id.imgTransportar);
+        imgDesplegar = (ImageView) findViewById(R.id.imgDesplegar);
 
         //Fin variables locales
 
@@ -126,7 +143,10 @@ public class MainFlota extends AppCompatActivity {
             public void onClick(View v) {
                 rlFlota.setVisibility(View.GONE);
                 llFlota1.setVisibility(View.VISIBLE);
+                btnFlota1.setVisibility(View.GONE);
                 //etSistemaFlota.setText(""+Global.sistemaSeleccionado);
+                tvPlanetaOrigen.setText(Global.planetaSeleccionado);
+                tvCoordenadasOrigen.setText("["+Global.sistemaSeleccionado+":"+Global.posicionSeleccionado+"]");
             }
         });
 
@@ -135,6 +155,7 @@ public class MainFlota extends AppCompatActivity {
             public void onClick(View v) {
                 rlFlota.setVisibility(View.VISIBLE);
                 llFlota1.setVisibility(View.GONE);
+                btnFlota1.setVisibility(View.VISIBLE);
                 etSistemaFlota.setText(""+Global.sistemaSeleccionado);
             }
         });
@@ -160,7 +181,47 @@ public class MainFlota extends AppCompatActivity {
         btnEnviarFlota.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                switch (tvMision.getText().toString()){
+                    case "Colonizar":
+                        colonizar(Integer.parseInt(String.valueOf(etSistemaFlota.getText())),
+                                Integer.parseInt(String.valueOf(etPosicionFlota.getText())));
+                        break;
+                    case "Atacar":
+                        break;
+                    case "Transportar":
+                        break;
+                    case "Desplegar":
+                        break;
 
+                }
+            }
+        });
+
+        imgColonizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tvMision.setText("Colonizar");
+            }
+        });
+
+        imgAtacar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tvMision.setText("Atacar");
+            }
+        });
+
+        imgTransportar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tvMision.setText("Transportar");
+            }
+        });
+
+        imgDesplegar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tvMision.setText("Desplegar");
             }
         });
     }
@@ -188,192 +249,54 @@ public class MainFlota extends AppCompatActivity {
         adaptadorNaves.stopListening();
     }
 
-    public void colonizar(){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Map<String,Object> mapPlaneta = new HashMap<String,Object>();
+    public void colonizar(int sistema, int posicion){
+        DocumentReference docPlaneta = Global.fFirestore.collection("Sistemas").document(String.valueOf(sistema)).collection("Planetas_Sistemas").document(String.valueOf(posicion));
+        docPlaneta.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null && document.exists()) {
+                        if (document.getString("idPlanetaJugador").equals(" ")){
+                            String idPlaneta = Global.fFirestore.collection("Planetas").document(Global.fAuth.getUid()).collection("Planetas_Jugador").document().getId();
 
-        String idPlaneta = db.collection("Planetas").document(Global.fAuth.getUid()).collection("Planetas_Jugador").document().getId();
+                            Global.asignarPlaneta(Global.fAuth, Global.fFirestore, idPlaneta,"Colonia", Integer.parseInt(String.valueOf(etMetal.getText())),
+                                    Integer.parseInt(String.valueOf(etCristal.getText())),
+                                    Integer.parseInt(String.valueOf(etDeuterio.getText())),
+                                    sistema, posicion, true);
+                            Global.inicializarRecursosPlaneta(Global.fFirestore, idPlaneta);
+                            Global.inicializarInstalacionesPlaneta(Global.fFirestore, idPlaneta);
+                            Global.inicializarNavesPlaneta(Global.fFirestore, idPlaneta);
+                            Global.inicializarDefensasPlaneta(Global.fFirestore, idPlaneta);
 
-        mapPlaneta.put("nombre","Colonia");
-        mapPlaneta.put("posicion",3);
-        mapPlaneta.put("sistema", 1);
-        mapPlaneta.put("colonia", true);
-
-        Random aleatorio = new Random();
-
-        mapPlaneta.put("id",idPlaneta);
-
-        mapPlaneta.put("metal",200);
-        mapPlaneta.put("cristal",100);
-        mapPlaneta.put("deuterio",50);
-        mapPlaneta.put("energia",0);
-
-        mapPlaneta.put("sistema", aleatorio.nextInt((99 - 0) + 1) + 0);
-        mapPlaneta.put("posicion",aleatorio.nextInt((9 - 0) + 1) + 0);
-
-        int posicionPlaneta = (int) mapPlaneta.get("posicion");
-
-        int aleatorioDiametro = 0;
-        double campos = 0.0;
-
-        if (posicionPlaneta == 1 || posicionPlaneta == 2 || posicionPlaneta == 3){
-            aleatorioDiametro = aleatorio.nextInt((7000 - 4000) + 1) + 4000;
-            campos = aleatorioDiametro / 100;
-
-            mapPlaneta.put("diametro",aleatorioDiametro);
-            mapPlaneta.put("campos",campos);
-        }
-
-        if (posicionPlaneta == 4 || posicionPlaneta == 5 || posicionPlaneta == 6){
-            aleatorioDiametro = aleatorio.nextInt((31000 - 12000) + 1) + 12000;
-            campos = aleatorioDiametro / 100;
-
-            mapPlaneta.put("diametro",aleatorioDiametro);
-            mapPlaneta.put("campos",campos);
-        }
-
-        if (posicionPlaneta == 7 || posicionPlaneta == 8 || posicionPlaneta == 9){
-            aleatorioDiametro = aleatorio.nextInt((25500 - 12500) + 1) + 12500;
-            campos = aleatorioDiametro / 100;
-
-            mapPlaneta.put("diametro",aleatorioDiametro);
-            mapPlaneta.put("campos",campos);
-        }
-
-        if (posicionPlaneta == 10 || posicionPlaneta == 11 || posicionPlaneta == 12){
-            aleatorioDiametro = aleatorio.nextInt((12500 - 7500) + 1) + 7500;
-            campos = aleatorioDiametro / 100;
-
-            mapPlaneta.put("diametro",aleatorioDiametro);
-            mapPlaneta.put("campos",campos);
-        }
-
-        if (posicionPlaneta == 13 || posicionPlaneta == 14 || posicionPlaneta == 15){
-            aleatorioDiametro = aleatorio.nextInt((19000 - 6000) + 1) + 6000;
-            campos = aleatorioDiametro / 100;
-
-            mapPlaneta.put("diametro",aleatorioDiametro);
-            mapPlaneta.put("campos",campos);
-        }
-
-        mapPlaneta.put("temperaturaMinima", calcularTemperaturaMinima(posicionPlaneta));
-        mapPlaneta.put("temperaturaMaxima", calcularTemperaturaMaxima(posicionPlaneta));
-
-
-        db.collection("Planetas").document(Global.fAuth.getUid()).collection("Planetas_Jugador").document(idPlaneta).set(mapPlaneta);
-
-        db.collection("Planetas").document("4s4CmUyJehQXdQjIV8WVF2VcNXo2").collection("Planetas_Jugador").document("oKHJACbZIsSCNO8oLdeQ").set(mapPlaneta);
+                            intent = new Intent(MainFlota.this, MainGeneral.class);
+                            intent.putExtra("anteriorActividad", "colonizar");
+                            Toast.makeText(MainFlota.this, "Planeta colonizado con éxito", Toast.LENGTH_SHORT).show();
+                            startActivity(intent);
+                        }
+                        else{
+                            Log.d("sistema: ", String.valueOf(sistema));
+                            Log.d("posicion: ", String.valueOf(posicion));
+                            Toast.makeText(MainFlota.this, "No es posible colonizar, el planeta ya está ocupado.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    else{
+                        Log.d("Check", "No such document");
+                    }
+                }
+            }
+        });
     }
 
-    public int calcularTemperaturaMinima(int posicionPlaneta){
-        Random aleatorio = new Random();
+    public void atacar(){
 
-        int temperatura = 0;
-
-        switch(posicionPlaneta){
-            case 1:
-                temperatura = aleatorio.nextInt((230 - 200) + 1) + 200;
-                break;
-            case 2:
-                temperatura = aleatorio.nextInt((170 - 150) + 1) + 150;
-                break;
-            case 3:
-                temperatura = aleatorio.nextInt((120 - 100) + 1) + 100;
-                break;
-            case 4:
-                temperatura = aleatorio.nextInt((70 - 50) + 1) + 50;
-                break;
-            case 5:
-                temperatura = aleatorio.nextInt((60 - 40) + 1) + 40;
-                break;
-            case 6:
-                temperatura = aleatorio.nextInt((50 - 30) + 1) + 30;
-                break;
-            case 7:
-                temperatura = aleatorio.nextInt((40 - 20) + 1) + 20;
-                break;
-            case 8:
-                temperatura = aleatorio.nextInt((30 - 10) + 1) + 10;
-                break;
-            case 9:
-                temperatura = aleatorio.nextInt((20 - 0) + 1);
-                break;
-            case 10:
-                temperatura = aleatorio.nextInt((10 - -10) + 1) + -10;
-                break;
-            case 11:
-                temperatura = aleatorio.nextInt((0 - -20) + 1) + -20;
-                break;
-            case 12:
-                temperatura = aleatorio.nextInt((-10 - -30) + 1) + -30;
-                break;
-            case 13:
-                temperatura = aleatorio.nextInt((-50 - -70) + 1) + -70;
-                break;
-            case 14:
-                temperatura = aleatorio.nextInt((-90 - -110) + 1) + -110;
-                break;
-            case 15:
-                temperatura = aleatorio.nextInt((-130 - -180) + 1) + -180;
-                break;
-        }
-
-        return temperatura;
     }
 
-    public int calcularTemperaturaMaxima(int posicionPlaneta){
-        Random aleatorio = new Random();
+    public void transportar(){
 
-        int temperatura = 0;
+    }
 
-        switch(posicionPlaneta){
-            case 1:
-                temperatura = aleatorio.nextInt((260 - 230) + 1) + 230;
-                break;
-            case 2:
-                temperatura = aleatorio.nextInt((190 - 170) + 1) + 170;
-                break;
-            case 3:
-                temperatura = aleatorio.nextInt((140 - 120) + 1) + 120;
-                break;
-            case 4:
-                temperatura = aleatorio.nextInt((90 - 70) + 1) + 70;
-                break;
-            case 5:
-                temperatura = aleatorio.nextInt((80 - 60) + 1) + 60;
-                break;
-            case 6:
-                temperatura = aleatorio.nextInt((70 - 50) + 1) + 50;
-                break;
-            case 7:
-                temperatura = aleatorio.nextInt((60 - 40) + 1) + 40;
-                break;
-            case 8:
-                temperatura = aleatorio.nextInt((50 - 30) + 1) + 30;
-                break;
-            case 9:
-                temperatura = aleatorio.nextInt((40 - 20) + 1) + 20;
-                break;
-            case 10:
-                temperatura = aleatorio.nextInt((30 - 10) + 1) + 10;
-                break;
-            case 11:
-                temperatura = aleatorio.nextInt((20 - 0) + 1);
-                break;
-            case 12:
-                temperatura = aleatorio.nextInt((10 - -10) + 1) + -10;
-                break;
-            case 13:
-                temperatura = aleatorio.nextInt((-30 - -50) + 1) + -30;
-                break;
-            case 14:
-                temperatura = aleatorio.nextInt((-70 - -90) + 1) + -70;
-                break;
-            case 15:
-                temperatura = aleatorio.nextInt((-110 - -130) + 1) + -110;
-                break;
-        }
+    public void desplegar(){
 
-        return temperatura;
     }
 }

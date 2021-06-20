@@ -134,32 +134,4 @@ public class MainConstruccion extends AppCompatActivity {
         super.onStop();
         adaptadorConstrucciones.stopListening();
     }
-
-    public static void mejorarConstruccion(String construccion, String nombre, int nivel){
-        switch(construccion){
-            case "Recursos":
-                nivel = nivel+1;
-                Global.fFirestore.collection("Recursos_Jugador").document("36RIVrMuyHkBXSMHtjOx").collection("Recursos_Planeta").document(nombre).update("cantidad", nivel);
-                break;
-            case "Instalaciones":
-                nivel = nivel+1;
-                Global.fFirestore.collection("Instalaciones_Jugador").document("36RIVrMuyHkBXSMHtjOx").collection("Instalaciones_Planeta").document(nombre).update("cantidad", nivel);
-                break;
-            case "Investigaciones":
-                nivel = nivel+1;
-                Global.fFirestore.collection("Investigaciones_Jugador").document("36RIVrMuyHkBXSMHtjOx").collection("Investigaciones_Planeta").document(nombre).update("cantidad", nivel);
-                break;
-            case "Naves":
-                nivel = nivel+1;
-                Global.fFirestore.collection("Naves_Jugador").document("36RIVrMuyHkBXSMHtjOx").collection("Naves_Planeta").document(nombre).update("cantidad", +nivel);
-                break;
-            case "Defensas":
-                nivel = nivel+1;
-                Global.fFirestore.collection("Defensas_Jugador").document("36RIVrMuyHkBXSMHtjOx").collection("Defensas_Planeta").document(nombre).update("cantidad", +nivel);
-                break;
-        }
-        /*query = fFirestore.collection(construccion).document(fAuth.getCurrentUser().getUid()).collection("Recursos_Jugador").document("9DiJdIR9Qp41ElEY9nJX");
-
-        fFirestore.collection(construccion).document(fAuth.getCurrentUser().getUid()).collection("Recursos_Planeta").document("9DiJdIR9Qp41ElEY9nJX").update("cantidad", nivel);*/
-    }
 }

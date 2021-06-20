@@ -3,6 +3,7 @@ package com.carlos.stellarControl.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -20,6 +22,8 @@ import com.carlos.stellarControl.utils.Global;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -34,6 +38,10 @@ public class MainPlaneta extends AppCompatActivity {
     Query query;
 
     Global global = new Global();
+
+    Metal metal = new Metal();
+    Cristal cristal = new Cristal();
+    Deuterio deuterio = new Deuterio();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +90,12 @@ public class MainPlaneta extends AppCompatActivity {
         //Fin variables locales
 
         //Toast.makeText(MainPlaneta.this, Global.idPlanetaSeleccionado, Toast.LENGTH_SHORT).show();
+
+        /*metal.start();
+
+        cristal.start();
+
+        deuterio.start();*/
 
         Global.imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,7 +158,29 @@ public class MainPlaneta extends AppCompatActivity {
         btnAbandonar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainPlaneta.this);
 
+                mBuilder.setTitle("¿Está seguro de querer abandonar "+Global.planetaSeleccionado+" ?");
+                mBuilder.setMessage("Se perderan para siempre todos los recursos, construcciones, naves y defensas que tenga en ese planeta");
+                mBuilder.setIcon(R.drawable.icon);
+                mBuilder.setPositiveButton("Aceptar",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Global.abandonarPlaneta(Global.idPlanetaSeleccionado, Global.sistemaSeleccionado, Global.posicionSeleccionado);
+                        intent = new Intent(MainPlaneta.this, MainGeneral.class);
+                        intent.putExtra("anteriorActividad", "abandonar");
+                        Toast.makeText(MainPlaneta.this, "Planeta abandonado", Toast.LENGTH_SHORT).show();
+                        startActivity(intent);
+                    }
+                });
+                mBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog mDialog = mBuilder.create();
+                mDialog.show();
             }
         });
     }
@@ -158,6 +194,22 @@ public class MainPlaneta extends AppCompatActivity {
 
         //Cargar los planetas en el selector
         Global.cargarPlanetas();
+
+        DocumentReference docRef = Global.fFirestore.collection("Instalaciones_Jugador").document(Global.idPlanetaSeleccionado).collection("Instalaciones_Planeta").document("Fabrica de nanobots");
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>(){
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null && document.exists()) {
+
+                    } else {
+                        Log.d("Check", "No such document");
+                    }
+                }
+            }
+        });
 
         //Mostrar datos del planeta
 
@@ -179,32 +231,91 @@ public class MainPlaneta extends AppCompatActivity {
                 }
             }
         });
+    }
 
-        new Thread(new Runnable(){
-
-            @Override
-            public void run() {
-                //while(Integer.parseInt(String.valueOf(Global.tvMetal.getText())) <= Global.capacidadMetal){
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Global.producirRecursos("Mina de metal", "metal");
-                            Global.producirRecursos("Mina de metal", "cristal");
-                            Global.producirRecursos("Mina de metal", "deuterio");
-                        }
-                    });
-                    try{
-                        Thread.sleep(1000);
-                    } catch(InterruptedException e){
-                        e.printStackTrace();
+    class Metal extends Thread {
+        @Override
+        public void run() {
+            while(Global.cantidadMetal <= Global.capacidadMetal){
+                SystemClock.sleep(2000);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Global.producirRecursos("Mina de metal", "metal");
+                        Global.producirRecursos("Mina de cristal", "cristal");
+                        Global.producirRecursos("Sintetizador de deuterio", "deuterio");
                     }
-                //}
+                });
+                try{
+                    Thread.sleep(5000);
+                } catch(InterruptedException e){
+                    e.printStackTrace();
+                }
             }
-        }).start();
+        }
+    }
+
+    class Cristal extends Thread {
+        @Override
+        public void run() {
+            while(Global.cantidadCristal <= Global.capacidadCristal){
+                SystemClock.sleep(4000);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Global.producirRecursos("Mina de metal", "cristal");
+                    }
+                });
+                try{
+                    Thread.sleep(5000);
+                } catch(InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    class Deuterio extends Thread {
+        @Override
+        public void run() {
+            SystemClock.sleep(6000);
+            while(Global.cantidadDeuterio <= Global.capacidadDeuterio){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Global.producirRecursos("Mina de metal", "deuterio");
+                    }
+                });
+                try{
+                    Thread.sleep(5000);
+                } catch(InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @Override
     protected void onStop(){
         super.onStop();
+        interrumpirProduccion();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        interrumpirProduccion();
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        interrumpirProduccion();
+    }
+
+    public void interrumpirProduccion(){
+        metal.interrupt();
+        cristal.interrupt();
+        deuterio.interrupt();
     }
 }

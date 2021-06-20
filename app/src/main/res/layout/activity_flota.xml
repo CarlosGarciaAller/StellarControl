@@ -68,11 +68,13 @@
             android:layout_height="match_parent"
             android:background="@drawable/gradient"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:orientation="horizontal"
                 tools:visibility="visible">
 
@@ -84,6 +86,8 @@
                     <TableRow
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
                         android:gravity="center">
 
                         <TextView
@@ -98,18 +102,21 @@
                     <TableRow
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
                         android:gravity="center">
 
                         <TextView
-                            android:id="@+id/textView10"
+                            android:id="@+id/tvPlanetaOrigen"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Eridanus" />
+                            android:layout_marginRight="5dp" />
 
                         <TextView
-                            android:id="@+id/textView35"
+                            android:id="@+id/tvCoordenadasOrigen"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
                             android:text="[93:1]" />
 
                     </TableRow>
@@ -124,7 +131,9 @@
 
                     <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp">
 
                         <TextView
                             android:id="@+id/textView9"
@@ -138,30 +147,29 @@
                     <TableRow
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
                         android:gravity="center">
 
                         <EditText
                             android:id="@+id/etSistemaFlota"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:ems="5"
-                            android:inputType="number"
-                            android:text="93" />
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/botton"
+                            android:ems="2"
+                            android:gravity="center"
+                            android:inputType="number" />
 
                         <EditText
                             android:id="@+id/etPosicionFlota"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:ems="5"
-                            android:inputType="number"
-                            android:text="9" />
-
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center">
+                            android:layout_marginLeft="5dp"
+                            android:background="@drawable/botton"
+                            android:ems="2"
+                            android:gravity="center"
+                            android:inputType="number" />
 
                     </TableRow>
 
@@ -172,12 +180,14 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
                 android:gravity="center">
 
                 <Button
                     android:id="@+id/btnAnterior1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
                     android:background="@drawable/draw_button"
                     android:text="Anterior" />
 
@@ -185,6 +195,7 @@
                     android:id="@+id/btnFlota2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
                     android:background="@drawable/draw_button"
                     android:text="Siguiente" />
             </TableRow>
@@ -197,7 +208,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/gradient"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <TableRow
                 android:layout_width="match_parent"
@@ -240,7 +251,7 @@
                         app:srcCompat="@drawable/target" />
 
                     <ImageView
-                        android:id="@+id/imgTransporte"
+                        android:id="@+id/imgTransportar"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_marginLeft="5dp"
@@ -318,13 +329,13 @@
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:id="@+id/textView20"
+                            android:id="@+id/tvMisionText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Mision: " />
 
                         <TextView
-                            android:id="@+id/textView21"
+                            android:id="@+id/tvMision"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                     </TableRow>
@@ -339,6 +350,10 @@
                             android:layout_height="wrap_content"
                             android:text="Descripcion" />
                     </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
 
                 </TableLayout>
 
@@ -374,7 +389,7 @@
                             app:srcCompat="@drawable/metal" />
 
                         <EditText
-                            android:id="@+id/editTextNumber"
+                            android:id="@+id/etMetal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ems="10"
@@ -395,7 +410,7 @@
                             app:srcCompat="@drawable/cristal" />
 
                         <EditText
-                            android:id="@+id/editTextNumber2"
+                            android:id="@+id/etCristal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ems="10"
@@ -416,7 +431,7 @@
                             app:srcCompat="@drawable/fuel" />
 
                         <EditText
-                            android:id="@+id/editTextNumber3"
+                            android:id="@+id/etDeuterio"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ems="10"

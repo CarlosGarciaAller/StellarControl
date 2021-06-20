@@ -52,6 +52,8 @@ public class AdapterGalaxia extends FirestoreRecyclerAdapter<Planeta, AdapterGal
             holder.usuario.setText(String.valueOf(planeta.getUsuario()));
         }
 
+        Global.getUsuarioActual();
+
         docRef = Global.fFirestore.collection("Usuarios").document(Global.fAuth.getCurrentUser().getUid());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>(){
             @Override
@@ -59,7 +61,7 @@ public class AdapterGalaxia extends FirestoreRecyclerAdapter<Planeta, AdapterGal
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document != null && document.exists()) {
-                        if(holder.nombre.getText().toString().equals("Kartem")){
+                        if(holder.usuario.getText().toString().equals(Global.usuarioActual)){
                             holder.imgDesplegarPlaneta.setVisibility(View.GONE);
                         }
                     } else {

@@ -1,17 +1,15 @@
 package com.carlos.stellarControl.model;
 
-import java.util.Map;
-
 public class Construccion {
     private String nombre, imagen, descripcion;
     private int costeMetal, costeCristal, costeDeuterio, costeEnergia, cantidad;
-    //private Map requisitosInvestigaciones, requisitosInstalaciones;
 
     public Construccion() {
 
     }
 
-    public Construccion(String nombre, String imagen, String descripcion, int costeMetal, int costeCristal, int costeDeuterio, int costeEnergia, int cantidad, Map requisitosInvestigaciones, Map requisitosInstalaciones) {
+    public Construccion(String nombre, String imagen, String descripcion,
+                        int costeMetal, int costeCristal, int costeDeuterio, int costeEnergia, int cantidad) {
         this.nombre = nombre;
         this.imagen = imagen;
         this.descripcion = descripcion;
@@ -20,8 +18,6 @@ public class Construccion {
         this.costeDeuterio = costeDeuterio;
         this.costeEnergia = costeEnergia;
         this.cantidad = cantidad;
-        /*this.requisitosInvestigaciones = requisitosInvestigaciones;
-        this.requisitosInstalaciones = requisitosInstalaciones;*/
     }
 
     public String getNombre() {
@@ -87,20 +83,4 @@ public class Construccion {
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
-
-    /*public Map getRequisitosInvestigaciones() {
-        return requisitosInvestigaciones;
-    }
-
-    public void setRequisitosInvestigaciones(Map requisitosInvestigaciones) {
-        this.requisitosInvestigaciones = requisitosInvestigaciones;
-    }
-
-    public Map getRequisitosInstalaciones() {
-        return requisitosInstalaciones;
-    }
-
-    public void setRequisitosInstalaciones(Map requisitosInstalaciones) {
-        this.requisitosInstalaciones = requisitosInstalaciones;
-    }*/
 }
