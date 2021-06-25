@@ -18,11 +18,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.carlos.stellarControl.R;
 import com.carlos.stellarControl.activities.MainActivity;
+import com.carlos.stellarControl.activities.MainConstruccion;
 import com.carlos.stellarControl.activities.MainGeneral;
 import com.carlos.stellarControl.activities.MainUsuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -32,6 +34,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,18 +45,21 @@ public class Global extends AppCompatActivity {
     private static Intent intent;
     public static FirebaseAuth fAuth;
     public static FirebaseFirestore fFirestore;
+    public static FirebaseDatabase database;
     static Query query;
     public static ArrayList<String> selectPlanetas = new ArrayList<>();
     public static ArrayList<String> nombresPlanetas = new ArrayList<>();
-    public static ImageView mensajes, settings, imgBack;
-    public static TextView tvMetal, tvCristal, tvDeuterio, tvPlaneta, tvCoordenadas;
+    public static ImageView mensajes, settings, imgBack, imgPlanetaSeleccionado;
+    public static TextView tvMetal, tvCristal, tvDeuterio, tvEnergia, tvPlaneta, tvCoordenadas;
     public static LinearLayout listPlanetas;
     public static String usuarioActual, planetaSeleccionado, idPlanetaSeleccionado;
-    public static Integer sistemaSeleccionado, posicionSeleccionado, capacidad, incremento, nivel,
+    public static int incremento = 0;
+    public static Integer sistemaSeleccionado, posicionSeleccionado, camposUsadosSeleccionado, camposTotalesSeleccionado,
+            nivelMetalActual, nivelCristalActual, nivelDeuterioActual,
             cantidadMetal, cantidadCristal, cantidadDeuterio,
             capacidadMetal, capacidadCristal, capacidadDeuterio = 0;
-    public static DocumentReference docPlaneta, docPlanetaSistema, docRef, docNivel, docUser;
-    private static boolean isStarted;
+    public static DocumentReference docPlaneta, docPlanetaSistema, docUser;
+    public static boolean isStarted, metalRunning, cristalRunning, deuterioRunning = false;
 
     public static String[] defensas = {
             "Lanzamisiles",
@@ -76,7 +82,7 @@ public class Global extends AppCompatActivity {
             "Tecnologia de plasma",
             "Motor de combustion",
             "Motor de impulso",
-            "Motor hiperespacial",
+            "Propulsor hiperespacial",
             "Colonizacion",
             "Graviton",
             "Tecnologia de ataque",
@@ -111,15 +117,15 @@ public class Global extends AppCompatActivity {
 
     }
 
-    public static void getUsuarioActual(){
-        docUser = Global.fFirestore.collection("Usuarios").document(String.valueOf(fAuth.getUid()));
+    public static void getUsuarioActual(String idUsuario){
+        docUser = Global.fFirestore.collection("Usuarios").document(idUsuario);
         docUser.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document != null && document.exists()) {
-                        usuarioActual = document.getString("usuario");
+                        usuarioActual = document.getString("nombre");
                     }
                     else{
                         Log.d("Check", "No such document");
@@ -129,7 +135,7 @@ public class Global extends AppCompatActivity {
         });
     }
 
-    public static void cargarPlanetas(){
+    public static void cargarSelectPlanetas(){
         fFirestore.collection("Planetas").document(fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot documentSnapshots, @Nullable FirebaseFirestoreException error) {
@@ -151,17 +157,79 @@ public class Global extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.e("Check","It works");
                         idPlanetaSeleccionado = document.getString("id");
                         tvPlaneta.setText(document.getString("nombre"));
                         planetaSeleccionado = document.getString("nombre");
                         sistemaSeleccionado = document.getLong("sistema").intValue();
                         posicionSeleccionado = document.getLong("posicion").intValue();
                         tvCoordenadas.setText(String.valueOf(document.getLong("sistema").intValue())+":"+String.valueOf(document.getLong("posicion").intValue()));
+                        DocumentReference docImagen = fFirestore.collection("Sistemas").document(String.valueOf(document.getLong("sistema").intValue())).collection("Planetas_Sistemas").document(String.valueOf(document.getLong("posicion").intValue()));
+                        docImagen.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>(){
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document != null && document.exists()) {
+                                        Picasso.get().load(document.getString("imagen")).into(imgPlanetaSeleccionado);
+                                    } else {
+                                        Log.d("Check", "No such document");
+                                    }
+                                }
+                            }
+                        });
                         capacidadMetal = document.getLong("capacidadMetal").intValue();
                         capacidadCristal = document.getLong("capacidadCristal").intValue();
                         capacidadDeuterio = document.getLong("capacidadDeuterio").intValue();
+                        camposUsadosSeleccionado = document.getLong("camposUsados").intValue();
+                        camposTotalesSeleccionado = document.getLong("camposTotales").intValue();
+                        Log.e("Check","Planeta actual: "+document.getString("nombre")+
+                                " ID: "+document.getString("id")+
+                                " Coordenadas: ["+document.getLong("sistema").intValue()+":"+document.getLong("posicion").intValue()+"]");
                         cargarRecursos(document.getString("nombre"));
+
+                        // Guardar niveles de las minas del planeta
+                        DocumentReference docMetal = fFirestore.collection("Recursos_Jugador").document(idPlanetaSeleccionado).collection("Recursos_Planeta").document("Mina de metal");
+                        docMetal.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>(){
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document != null && document.exists()) {
+                                        nivelMetalActual = document.getLong("cantidad").intValue();
+                                    } else {
+                                        Log.d("Check", "No such document");
+                                    }
+                                }
+                            }
+                        });
+                        DocumentReference docCristal = fFirestore.collection("Recursos_Jugador").document(idPlanetaSeleccionado).collection("Recursos_Planeta").document("Mina de cristal");
+                        docCristal.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>(){
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document != null && document.exists()) {
+                                        nivelCristalActual = document.getLong("cantidad").intValue();
+                                    } else {
+                                        Log.d("Check", "No such document");
+                                    }
+                                }
+                            }
+                        });
+                        DocumentReference docDeuterio = fFirestore.collection("Recursos_Jugador").document(idPlanetaSeleccionado).collection("Recursos_Planeta").document("Sintetizador de deuterio");
+                        docDeuterio.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>(){
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document != null && document.exists()) {
+                                        nivelDeuterioActual = document.getLong("cantidad").intValue();
+                                    } else {
+                                        Log.d("Check", "No such document");
+                                    }
+                                }
+                            }
+                        });
                     }
                 }
             }
@@ -196,23 +264,68 @@ public class Global extends AppCompatActivity {
         });
     }
 
-    public static void producirRecursos(String mina, String recurso){
-        docNivel = fFirestore.collection("Recursos_Jugador").document(idPlanetaSeleccionado).collection("Recursos_Planeta").document(mina);
-        docNivel.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>(){
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document != null && document.exists()) {
-                            nivel = document.getLong("cantidad").intValue();
-                    } else {
-                        Log.d("Check", "No such document");
-                    }
-                }
-            }
-        });
+    //comprueba si los almacenes están llenos
+    public static boolean espacioSuficiente(TextView recurso, int capacidad){
+        boolean producir = false;
+        Log.e("Check", "Cantidad Recurso: "+Integer.parseInt(String.valueOf(recurso.getText()))+" Capacidad: "+capacidad);
+        if (Integer.parseInt(String.valueOf(recurso.getText())) <= capacidad){
+            Log.e("Check", "produciendo");
+            producir = true;
+        }
+        return producir;
+    }
 
-        docPlaneta = fFirestore.collection("Planetas").document(Global.fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador").document(idPlanetaSeleccionado);
+    //comprueba si hay suficientes recursos para construir
+    public static boolean recursosSuficientes(String recurso, int coste){
+        boolean disponible = false;
+        Log.e("Check", "Cantidad Recurso: "+Integer.parseInt(String.valueOf(tvMetal.getText()))+" Coste: "+coste);
+        if (recurso.equals("Metal")){
+            if (Integer.parseInt(String.valueOf(tvMetal.getText())) >= coste){
+                disponible = true;
+            }
+        }
+        Log.e("Check", "Cantidad Recurso: "+Integer.parseInt(String.valueOf(tvCristal.getText()))+" Coste: "+coste);
+        if (recurso.equals("Cristal")){
+            if (Integer.parseInt(String.valueOf(tvCristal.getText())) >= coste){
+                disponible = true;
+            }
+        }
+        Log.e("Check", "Cantidad Recurso: "+Integer.parseInt(String.valueOf(tvDeuterio.getText()))+" Coste: "+coste);
+        if (recurso.equals("Deuterio")){
+            if (Integer.parseInt(String.valueOf(tvDeuterio.getText())) >= coste){
+                disponible = true;
+            }
+        }
+        return disponible;
+    }
+
+    //añade recursos a los contadores
+    public static void producirRecursos(String recurso){
+        Log.e("Check", recurso+"Metal actual: "+tvMetal.getText()+ " Cristal actual: "+tvCristal.getText()+ " Deuterio actual: "+tvDeuterio.getText());
+        if (recurso.equals("metal") && nivelMetalActual >= 1){
+            Log.e("Check", "Produciendo: "+recurso);
+            incremento += nivelMetalActual * 6;
+            int auxMetal = cantidadMetal + incremento;
+            tvMetal.setText(""+auxMetal);
+            //fFirestore.collection("Planetas").document(fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador").document(planetaSeleccionado).update("metal", auxMetal);
+        }
+
+        if (recurso.equals("cristal") && nivelCristalActual >= 1){
+            Log.e("Check", "Produciendo: "+recurso);
+            incremento += nivelCristalActual * 2;
+            int auxCristal = cantidadCristal + incremento;
+            tvCristal.setText(""+auxCristal);
+            //fFirestore.collection("Planetas").document(fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador").document(planetaSeleccionado).update("deuterio", auxCristal);
+        }
+        if (recurso.equals("deuterio") && nivelDeuterioActual >= 1){
+            Log.e("Check", "Produciendo: "+recurso);
+            incremento += nivelDeuterioActual * 4;
+            int auxDeuterio = cantidadDeuterio + incremento;
+            tvDeuterio.setText(""+auxDeuterio);
+            //fFirestore.collection("Planetas").document(fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador").document(planetaSeleccionado).update("cristal", auxDeuterio);
+        }
+
+        /*docPlaneta = fFirestore.collection("Planetas").document(Global.fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador").document(idPlanetaSeleccionado);
         docPlaneta.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>(){
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -229,33 +342,17 @@ public class Global extends AppCompatActivity {
                             incremento = nivel * 1;
                         }
                         if (document.getLong(recurso) == 0){
-                            fFirestore.collection("Planetas").document(fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador").document(idPlanetaSeleccionado).update(
-                                    recurso,0+incremento);
+                            //fFirestore.collection("Planetas").document(fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador").document(idPlanetaSeleccionado).update(recurso,0+incremento);
                         }
                         else{
-                            fFirestore.collection("Planetas").document(fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador").document(idPlanetaSeleccionado).update(
-                                    recurso,document.getLong(recurso).intValue()+incremento);
+                            //fFirestore.collection("Planetas").document(fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador").document(idPlanetaSeleccionado).update(recurso,document.getLong(recurso).intValue()+incremento);
                         }
                     } else {
                         Log.d("Check", "No such document");
                     }
                 }
             }
-        });
-    }
-
-    public static Integer obtenerCapacidad(Query query, String capacidadRecurso){
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        capacidad = document.getLong(capacidadRecurso).intValue();
-                    }
-                }
-            }
-        });
-        return capacidad;
+        });*/
     }
 
     public static void cambiarPlaneta(Activity main, String nombrePlaneta){
@@ -277,6 +374,11 @@ public class Global extends AppCompatActivity {
                         capacidadMetal = document.getLong("capacidadMetal").intValue();
                         capacidadCristal = document.getLong("capacidadCristal").intValue();
                         capacidadDeuterio = document.getLong("capacidadDeuterio").intValue();
+                        camposUsadosSeleccionado = document.getLong("camposUsados").intValue();
+                        camposTotalesSeleccionado = document.getLong("camposTotales").intValue();
+                        Log.e("Check","Desplazando a: "+document.getString("nombre")+
+                                " ID: "+document.getString("id")+
+                                " Coordenadas: ["+document.getLong("sistema").intValue()+":"+document.getLong("posicion").intValue()+"]");
                         cargarRecursos(document.getString("nombre"));
                     }
                 }
@@ -292,7 +394,6 @@ public class Global extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int i) {
                 intent = new Intent(main, MainGeneral.class);
                 planetaSeleccionado = nombresPlanetas.get(i);
-                //Toast.makeText(main, nombresPlanetas.get(i)+":"+planetaSeleccionado, Toast.LENGTH_SHORT).show();
                 cambiarPlaneta(main, nombresPlanetas.get(i));
                 intent.putExtra("anteriorActividad", "seleccion");
                 main.startActivity(intent);
@@ -310,7 +411,7 @@ public class Global extends AppCompatActivity {
 
     public static void desplegarOpciones(Activity main){
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(main);
-        String[] listOpciones = new String[]{"Configuración","Cerrar sesión"};
+        String[] listOpciones = new String[]{"Configuración", "Cerrar sesión"};
         mBuilder.setTitle("Opciones");
         mBuilder.setIcon(R.drawable.icon);
         mBuilder.setItems(listOpciones, new DialogInterface.OnClickListener() {
@@ -345,19 +446,72 @@ public class Global extends AppCompatActivity {
         main.startActivity(intent);
     }
 
-    public static void asignarPlaneta(FirebaseAuth user, FirebaseFirestore db, String idPlaneta, String nombrePlaneta, int metal, int cristal, int deuterio, int sistema, int posicion, boolean esColonia){
+    public static void comprobarConstruccion(String construccion, Activity main){
+        DocumentReference docHangar = Global.fFirestore.collection("Instalaciones_Jugador").document(Global.idPlanetaSeleccionado).collection("Instalaciones_Planeta").document(construccion);
+        docHangar.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null && document.exists()) {
+                        if (document.getLong("cantidad") == 0){
+                            Toast.makeText(main, "Primero debes construir un"+construccion, Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            intent = new Intent(main, MainConstruccion.class);
+                            intent.putExtra("Construcción", "Naves");
+                            main.startActivity(intent);
+                        }
+                    } else {
+                        Log.d("Check", "No such document");
+                    }
+                }
+            }
+        });
+    }
+
+    public static void asignarPlaneta(FirebaseAuth user, FirebaseFirestore db, String idPlaneta, String nombrePlaneta, String usuario, int metal, int cristal, int deuterio, int sistema, int posicion, boolean esColonia){
         Random aleatorio = new Random();
 
         Map mapSistema = new HashMap<String,Object>();
 
         mapSistema.put("idPlanetaJugador", idPlaneta);
-        mapSistema.put("nombrePlaneta", nombrePlaneta);
+        mapSistema.put("nombre", nombrePlaneta);
         mapSistema.put("posicion", posicion);
-        mapSistema.put("usuario","Kartem");
+        mapSistema.put("usuario", usuario);
 
-        Log.d("ID planeta: ", String.valueOf(idPlaneta));
+        Log.d("idPlanetaJugador: ", String.valueOf(idPlaneta));
         Log.d("posicion: ", String.valueOf(posicion));
         Log.d("sistema: ", String.valueOf(sistema));
+        switch(posicion){
+            case 1:
+                mapSistema.put("imagen", "https://firebasestorage.googleapis.com/v0/b/stellar-control.appspot.com/o/Planetas%2Fplanet1.png?alt=media&token=04b41e8c-4a78-464f-8f42-699da430d313");
+                break;
+            case 2:
+                mapSistema.put("imagen", "https://firebasestorage.googleapis.com/v0/b/stellar-control.appspot.com/o/Planetas%2Fplanet2.png?alt=media&token=f8fe5d67-0e64-4681-a337-3975938310bb");
+                break;
+            case 3:
+                mapSistema.put("imagen", "https://firebasestorage.googleapis.com/v0/b/stellar-control.appspot.com/o/Planetas%2Fplanet3.png?alt=media&token=4e52cf84-6b23-4630-a329-1ace76953c20");
+                break;
+            case 4:
+                mapSistema.put("imagen", "https://firebasestorage.googleapis.com/v0/b/stellar-control.appspot.com/o/Planetas%2Fplanet4.png?alt=media&token=e3cd5236-1390-4759-8a38-71f2561ea990");
+                break;
+            case 5:
+                mapSistema.put("imagen", "https://firebasestorage.googleapis.com/v0/b/stellar-control.appspot.com/o/Planetas%2Fplanet5.png?alt=media&token=5f2918b9-8a9e-458d-834e-f1fa0fa5ff3d");
+                break;
+            case 6:
+                mapSistema.put("imagen", "https://firebasestorage.googleapis.com/v0/b/stellar-control.appspot.com/o/Planetas%2Fplanet6.png?alt=media&token=f2eb3d33-255d-48b6-ba3e-c1946aa13f11");
+                break;
+            case 7:
+                mapSistema.put("imagen", "https://firebasestorage.googleapis.com/v0/b/stellar-control.appspot.com/o/Planetas%2Fplanet7.png?alt=media&token=a0df3b20-6c8d-4b9c-9fbf-4b553d416f2f");
+                break;
+            case 8:
+                mapSistema.put("imagen", "https://firebasestorage.googleapis.com/v0/b/stellar-control.appspot.com/o/Planetas%2Fplanet8.png?alt=media&token=e75a3572-4eab-4839-9166-4b89d4d72c4e");
+                break;
+            case 9:
+                mapSistema.put("imagen", "https://firebasestorage.googleapis.com/v0/b/stellar-control.appspot.com/o/Planetas%2Fplanet9.png?alt=media&token=0c64cb66-bad9-478a-9fa9-c99d38c26698");
+                break;
+        }
 
         db.collection("Sistemas").document(String.valueOf(sistema)).collection("Planetas_Sistemas").document(String.valueOf(posicion)).set(mapSistema);
 
@@ -562,7 +716,7 @@ public class Global extends AppCompatActivity {
 
         Integer[] costeDeuterio = {100000 ,100, 200, 225, 100000, 20000};
 
-        Integer[] costeEnergia = {0, 0, 0, 0, 0, 0, 1000};
+        Integer[] costeEnergia = {0, 0, 0, 0, 0, 1000, 0};
 
         Integer[] nivel = {0, 0, 0, 0, 0, 0};
 
@@ -604,16 +758,21 @@ public class Global extends AppCompatActivity {
     public static void inicializarNavesPlaneta(FirebaseFirestore db, String idPlaneta){
         Map mapNaves = new HashMap<String,Object>();
 
-        Integer[] costeMetal = {2000, 6000, 10000, 3000, 6000, 20000, 45000, 30000, 60000, 10000, 4000, 800, 5000000};
+        Integer[] costeMetal = {2000, 6000, 10000, 3000, 6000, 20000, 45000, 30000, 50000, 60000,  5000000};
 
-        Integer[] costeCristal = {2000, 6000, 20000, 1000, 4000, 7000, 15000, 40000, 50000, 20000, 8000, 4000000};
+        Integer[] costeCristal = {2000, 6000, 20000, 1000, 4000, 7000, 15000, 40000, 25000, 50000, 4000000};
 
         Integer[] costeDeuterio = {0, 0, 10000, 0, 0, 2000, 0, 15000, 15000, 15000, 1000000};
 
-        Integer[] costeEnergia = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        Integer[] costeEnergia = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-        Integer[] cantidad = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        Integer[] cantidad = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
+        Integer[] ataque = {5, 5, 50, 50, 150, 400, 1000, 700, 1000, 2000, 200000};
+
+        Integer[] defensa = {4000, 12000, 30000, 4000, 10000, 27000, 60000, 70000, 75000, 110000, 9000000};
+
+        Integer[] escudo = {10, 25, 100, 10, 25, 50, 200, 400, 500, 500, 50000};
 
         for (int i = 0; i < naves.length; i++){
             mapNaves.put("nombre",naves[i]);
@@ -621,6 +780,9 @@ public class Global extends AppCompatActivity {
             mapNaves.put("costeCristal",costeCristal[i]);
             mapNaves.put("costeDeuterio",costeDeuterio[i]);
             mapNaves.put("costeEnergia",costeEnergia[i]);
+            mapNaves.put("ataque",ataque[i]);
+            mapNaves.put("defensa",defensa[i]);
+            mapNaves.put("escudo",escudo[i]);
             mapNaves.put("cantidad",cantidad[i]);
 
             db.collection("Naves_Jugador").document(idPlaneta).collection("Naves_Planeta").document(naves[i]).set(mapNaves);
@@ -640,12 +802,22 @@ public class Global extends AppCompatActivity {
 
         Integer[] cantidad = {0, 0, 0, 0, 0, 0};
 
+        Integer[] ataque = {80, 100, 250, 1100, 150, 3000};
+
+        Integer[] defensa = {2000, 2000, 8000, 35000, 8000, 100000};
+
+        Integer[] escudo = {20, 25, 100, 200, 500, 300};
+
         for (int i = 0; i < defensas.length; i++){
             mapDefensas.put("nombre",defensas[i]);
             mapDefensas.put("costeMetal",costeMetal[i]);
             mapDefensas.put("costeCristal",costeCristal[i]);
             mapDefensas.put("costeDeuterio",costeDeuterio[i]);
             mapDefensas.put("costeEnergia",costeEnergia[i]);
+            mapDefensas.put("ataque",ataque[i]);
+            mapDefensas.put("defensa",defensa[i]);
+            mapDefensas.put("escudo",escudo[i]);
+            mapDefensas.put("cantidad",cantidad[i]);
             mapDefensas.put("cantidad",cantidad[i]);
 
             db.collection("Defensas_Jugador").document(idPlaneta).collection("Defensas_Planeta").document(defensas[i]).set(mapDefensas);
@@ -685,6 +857,25 @@ public class Global extends AppCompatActivity {
         docPlanetaSistema.update("idPlanetaJugador", " ");
         docPlanetaSistema.update("nombrePlaneta", " ");
         docPlanetaSistema.update("usuario", " ");
+    }
+
+    public static void crearMensaje(FirebaseFirestore db, String idUsuario, String asunto, String categoria, String contenido, String remitente){
+
+        Map mapMensaje = new HashMap<String,Object>();
+        String idMensaje = db.collection("Mensajes").document(idUsuario).collection("Mensajes_Jugador").document().getId();
+
+        mapMensaje.put("asunto", asunto);
+        mapMensaje.put("categoria", categoria);
+        mapMensaje.put("contenido", contenido);
+        mapMensaje.put("remitente",remitente);
+
+        db.collection("Mensajes").document(idUsuario).collection("Mensajes_Jugador").document(idMensaje).set(mapMensaje);
+
+    }
+
+    public static void espiar(){
+        //crearMensaje(String idUsuario, String asunto, String categoria, String contenido, String remitente);
+
     }
 
     @Override

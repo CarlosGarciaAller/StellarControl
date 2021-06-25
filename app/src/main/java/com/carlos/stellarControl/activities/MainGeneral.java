@@ -1,8 +1,10 @@
 package com.carlos.stellarControl.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,8 +30,7 @@ public class MainGeneral extends AppCompatActivity {
     Metal metal = new Metal();
     Cristal cristal = new Cristal();
     Deuterio deuterio = new Deuterio();
-    //Recursos recursos = new Recursos();
-    private boolean isRunning = false;
+    boolean isRunning = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,6 @@ public class MainGeneral extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         anteriorActividad = extras.getString("anteriorActividad");
-        //planetaSeleccionado = extras.getString("nombrePlaneta");
 
         // Fin variables extras
 
@@ -52,10 +52,12 @@ public class MainGeneral extends AppCompatActivity {
         Global.mensajes = (ImageView) findViewById(R.id.imgMensajes);
         Global.settings = (ImageView) findViewById(R.id.imgSettings);
         Global.imgBack = (ImageView) findViewById(R.id.imgBack);
+        Global.imgPlanetaSeleccionado = (ImageView) findViewById(R.id.imgPlanetaSeleccionado);
 
         Global.tvMetal = (TextView) findViewById(R.id.tvMetal);
         Global.tvCristal = (TextView) findViewById(R.id.tvCristal);
         Global.tvDeuterio = (TextView) findViewById(R.id.tvDeuterio);
+        Global.tvEnergia = (TextView) findViewById(R.id.tvEnergia);
         Global.tvPlaneta = (TextView) findViewById(R.id.tvPlaneta);
         Global.tvCoordenadas = (TextView) findViewById(R.id.tvCoordenadas);
         Global.listPlanetas = (LinearLayout) findViewById(R.id.listPlanetas);
@@ -82,19 +84,20 @@ public class MainGeneral extends AppCompatActivity {
 
         Toast.makeText(MainGeneral.this, "Cargando Planeta seleccionado: "+Global.planetaSeleccionado, Toast.LENGTH_SHORT).show();
 
-        /*metal.start();
+        //recursos.start();
 
-        cristal.start();
-
-        deuterio.start();*/
-
-        isRunning = true;
+        Global.imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Global.volverGeneral(MainGeneral.this);
+            }
+        });
 
         Global.mensajes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                interrumpirProduccion();
                 intent = new Intent(MainGeneral.this, MainMensajes.class);
+                intent.putExtra("categoria", "Consulta");
                 startActivity(intent);
             }
         });
@@ -102,7 +105,6 @@ public class MainGeneral extends AppCompatActivity {
         Global.settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                interrumpirProduccion();
                 Global.desplegarOpciones(MainGeneral.this);
             }
         });
@@ -110,7 +112,6 @@ public class MainGeneral extends AppCompatActivity {
         Global.listPlanetas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                interrumpirProduccion();
                 Global.desplegarPlanetas(MainGeneral.this, new AlertDialog.Builder(MainGeneral.this));
             }
         });
@@ -118,7 +119,6 @@ public class MainGeneral extends AppCompatActivity {
         btnVision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                interrumpirProduccion();
                 intent = new Intent(MainGeneral.this, MainPlaneta.class);
                 intent.putExtra("NombrePlaneta", Global.planetaSeleccionado);
                 startActivity(intent);
@@ -128,7 +128,6 @@ public class MainGeneral extends AppCompatActivity {
         btnRecursos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                interrumpirProduccion();
                 intent = new Intent(MainGeneral.this, MainConstruccion.class);
                 intent.putExtra("Construcción", "Recursos");
                 startActivity(intent);
@@ -138,7 +137,6 @@ public class MainGeneral extends AppCompatActivity {
         btnInstalaciones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                interrumpirProduccion();
                 intent = new Intent(MainGeneral.this, MainConstruccion.class);
                 intent.putExtra("Construcción", "Instalaciones");
                 startActivity(intent);
@@ -148,37 +146,27 @@ public class MainGeneral extends AppCompatActivity {
         btnInvestigaciones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                interrumpirProduccion();
-                intent = new Intent(MainGeneral.this, MainConstruccion.class);
-                intent.putExtra("Construcción", "Investigaciones");
-                startActivity(intent);
+                Global.comprobarConstruccion("Laboratorio de investigacion", MainGeneral.this);
             }
         });
 
         btnHangar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                interrumpirProduccion();
-                intent = new Intent(MainGeneral.this, MainConstruccion.class);
-                intent.putExtra("Construcción", "Naves");
-                startActivity(intent);
+                Global.comprobarConstruccion("Hangar", MainGeneral.this);
             }
         });
 
         btnDefensas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                interrumpirProduccion();
-                intent = new Intent(MainGeneral.this, MainConstruccion.class);
-                intent.putExtra("Construcción", "Defensas");
-                startActivity(intent);
+                Global.comprobarConstruccion("Hangar", MainGeneral.this);
             }
         });
 
         btnFlota.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                interrumpirProduccion();
                 intent = new Intent(MainGeneral.this, MainFlota.class);
                 startActivity(intent);
             }
@@ -187,7 +175,6 @@ public class MainGeneral extends AppCompatActivity {
         btnGalaxia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                interrumpirProduccion();
                 intent = new Intent(MainGeneral.this, MainGalaxia.class);
                 intent.putExtra("anteriorActividad", "general");
                 startActivity(intent);
@@ -197,17 +184,8 @@ public class MainGeneral extends AppCompatActivity {
         btnAlianza.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                interrumpirProduccion();
                 intent = new Intent(MainGeneral.this, MainAlianza.class);
                 startActivity(intent);
-            }
-        });
-
-        Global.imgBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                interrumpirProduccion();
-                Global.volverGeneral(MainGeneral.this);
             }
         });
     }
@@ -216,55 +194,54 @@ public class MainGeneral extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
 
-        //Cargar los recursos del planeta seleccionado
-        if (anteriorActividad.equals("login") || anteriorActividad.equals("registrar") || anteriorActividad.equals("abandonar")) {
-            query = Global.fFirestore.collection("Planetas").document(Global.fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador").whereEqualTo("colonia",false);
-            /*query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            planetaSeleccionado = document.getString("nombre");
-                            Toast.makeText(MainGeneral.this, "Cargando Planeta seleccionado: "+document.getString("nombre"), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-            });*/
-            Toast.makeText(MainGeneral.this, "Cargando Planeta seleccionado: "+Global.planetaSeleccionado, Toast.LENGTH_SHORT).show();
-        }
-        else{
-            query = Global.fFirestore.collection("Planetas").document(Global.fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador").whereEqualTo("nombre",Global.planetaSeleccionado);
-
-        }
-
         //Mostrar el planeta seleccionado en el selecctor de planetas
-        Global.mostrarPlanetaSeleccionado(query);
+        Global.mostrarPlanetaSeleccionado(Global.fFirestore.collection("Planetas").document(Global.fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador").whereEqualTo("nombre",Global.planetaSeleccionado));
+
+        Global.metalRunning = Global.espacioSuficiente(Global.tvMetal, Global.capacidadMetal);
+        Global.cristalRunning = Global.espacioSuficiente(Global.tvCristal, Global.capacidadCristal);
+        Global.deuterioRunning = Global.espacioSuficiente(Global.tvDeuterio, Global.capacidadDeuterio);
 
         //Cargar los planetas del jugador en el selector
-        Global.cargarPlanetas();
+        Global.cargarSelectPlanetas();
 
-
+        if(!isRunning){
+            metal.start();
+            cristal.start();
+            deuterio.start();
+            isRunning = true;
+        }
     }
 
     @Override
     protected void onStop(){
         super.onStop();
-        interrumpirProduccion();
+        //interrumpirProduccion();
+        Log.e("Check", "Stop: Actualizando a base de datos");
     }
 
     @Override
     public void onPause() {
+        //interrumpirProduccion();
         super.onPause();
-        interrumpirProduccion();
+        Log.e("Check", "Pause: Actualizando a base de datos");
+
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        Log.e("Check", "Reanudando");
     }
 
     @Override
     public void onDestroy(){
-        super.onDestroy();
         interrumpirProduccion();
+        super.onDestroy();
+        Log.e("Check", "Destroy: Actualizando a base de datos");
     }
 
     public void interrumpirProduccion(){
+        //recursos.interrupt();
         metal.interrupt();
         cristal.interrupt();
         deuterio.interrupt();
@@ -273,15 +250,17 @@ public class MainGeneral extends AppCompatActivity {
     class Metal extends Thread {
         @Override
         public void run() {
-            if (!isRunning) {
-                while (Global.cantidadMetal <= Global.capacidadMetal) {
-                    SystemClock.sleep(2000);
+            while (Global.metalRunning) {
+                    SystemClock.sleep(6000);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Global.producirRecursos("Mina de metal", "metal");
-                            Global.producirRecursos("Mina de cristal", "cristal");
-                            Global.producirRecursos("Sintetizador de deuterio", "deuterio");
+                            Global.producirRecursos("metal");
+                            if (!Global.espacioSuficiente(Global.tvMetal, Global.capacidadMetal)) {
+                                Global.metalRunning = false;
+                                Global.tvMetal.setText(""+Global.capacidadMetal);
+                                Global.tvMetal.setTextColor(Color.parseColor("#FF0000"));
+                            }
                         }
                     });
                     try {
@@ -289,21 +268,23 @@ public class MainGeneral extends AppCompatActivity {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                }
-            }
         }
-    }
+    }}
 
     class Cristal extends Thread {
         @Override
         public void run() {
-            if (!isRunning) {
-                while (Global.cantidadCristal <= Global.capacidadCristal) {
+                while (Global.cristalRunning) {
                     SystemClock.sleep(4000);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Global.producirRecursos("Mina de metal", "cristal");
+                            Global.producirRecursos("cristal");
+                            if (!Global.espacioSuficiente(Global.tvCristal, Global.capacidadCristal)) {
+                                Global.cristalRunning = false;
+                                Global.tvCristal.setText(""+Global.capacidadCristal);
+                                Global.tvCristal.setTextColor(Color.parseColor("#FF0000"));
+                            }
                         }
                     });
                     try {
@@ -312,27 +293,29 @@ public class MainGeneral extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-            }
         }
     }
 
     class Deuterio extends Thread {
         @Override
         public void run() {
-            if (!isRunning) {
-                while (Global.cantidadDeuterio <= Global.capacidadDeuterio) {
-                    SystemClock.sleep(6000);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Global.producirRecursos("Mina de metal", "deuterio");
+            while (Global.deuterioRunning) {
+                SystemClock.sleep(2000);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Global.producirRecursos("deuterio");
+                        if (!Global.espacioSuficiente(Global.tvDeuterio, Global.capacidadDeuterio)) {
+                            Global.deuterioRunning = false;
+                            Global.tvDeuterio.setText(""+Global.capacidadDeuterio);
+                            Global.tvDeuterio.setTextColor(Color.parseColor("#FF0000"));
                         }
-                    });
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
                     }
+                });
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         }

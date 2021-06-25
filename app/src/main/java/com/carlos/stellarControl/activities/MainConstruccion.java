@@ -3,11 +3,11 @@ package com.carlos.stellarControl.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,9 +28,6 @@ public class MainConstruccion extends AppCompatActivity {
     TextView tvTituloConstruccion;
     private RecyclerView rvConstrucciones;
     private AdapterConstruccion adaptadorConstrucciones;
-    String planetaSeleccionado;
-    Global global = new Global();
-    Button btnConstruir;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +43,16 @@ public class MainConstruccion extends AppCompatActivity {
         Global.mensajes = (ImageView) findViewById(R.id.imgMensajes);
         Global.settings = (ImageView) findViewById(R.id.imgSettings);
         Global.imgBack = (ImageView) findViewById(R.id.imgBack);
+        Global.imgPlanetaSeleccionado = (ImageView) findViewById(R.id.imgPlanetaSeleccionado);
 
         Global.tvMetal = (TextView) findViewById(R.id.tvMetal);
         Global.tvCristal = (TextView) findViewById(R.id.tvCristal);
         Global.tvDeuterio = (TextView) findViewById(R.id.tvDeuterio);
+        Global.tvEnergia = (TextView) findViewById(R.id.tvEnergia);
         Global.tvPlaneta = (TextView) findViewById(R.id.tvPlaneta);
         Global.tvCoordenadas = (TextView) findViewById(R.id.tvCoordenadas);
+        Global.imgPlanetaSeleccionado = (ImageView) findViewById(R.id.imgPlanetaSeleccionado);
+        Global.listPlanetas = (LinearLayout) findViewById(R.id.listPlanetas);
 
         tvTituloConstruccion = (TextView) findViewById(R.id.tvTituloConstruccion);
         tvTituloConstruccion.setText(construccion);
@@ -61,19 +62,19 @@ public class MainConstruccion extends AppCompatActivity {
 
         switch(MainConstruccion.construccion){
             case "Recursos":
-                query = global.fFirestore.collection("Recursos");
+                query = Global.fFirestore.collection("Recursos");
                 break;
             case "Instalaciones":
-                query = global.fFirestore.collection("Instalaciones");
+                query = Global.fFirestore.collection("Instalaciones");
                 break;
             case "Investigaciones":
-                query = global.fFirestore.collection("Investigaciones");
+                query = Global.fFirestore.collection("Investigaciones");
                 break;
             case "Naves":
-                query = global.fFirestore.collection("Naves");
+                query = Global.fFirestore.collection("Naves");
                 break;
             case "Defensas":
-                query = global.fFirestore.collection("Defensas");
+                query = Global.fFirestore.collection("Defensas");
                 break;
         }
 
@@ -94,6 +95,7 @@ public class MainConstruccion extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 intent = new Intent(MainConstruccion.this, MainMensajes.class);
+                intent.putExtra("categoria", "Consulta");
                 startActivity(intent);
             }
         });
@@ -109,8 +111,8 @@ public class MainConstruccion extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Cargar los planetas en el selector
-                global.cargarPlanetas();
-                //Global.desplegarPlanetas(MainConstruccion.this, new AlertDialog.Builder(MainConstruccion.this));
+                //Global.cargarSelectPlanetas();
+                Global.desplegarPlanetas(MainConstruccion.this, new AlertDialog.Builder(MainConstruccion.this));
             }
         });
     }
@@ -121,12 +123,7 @@ public class MainConstruccion extends AppCompatActivity {
         adaptadorConstrucciones.startListening();
 
         //Mostrar el planeta seleccionado en el selecctor de planetas
-        global.mostrarPlanetaSeleccionado(global.fFirestore.collection("Planetas").document(global.fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador").whereEqualTo("nombre",global.planetaSeleccionado));
-
-        //Cargar los recursos del planeta seleccionado
-        global.cargarRecursos(global.planetaSeleccionado);
-
-        Toast.makeText(MainConstruccion.this, "Planeta seleccionado: "+global.planetaSeleccionado, Toast.LENGTH_SHORT).show();
+        Global.mostrarPlanetaSeleccionado(Global.fFirestore.collection("Planetas").document(Global.fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador").whereEqualTo("nombre",Global.planetaSeleccionado));
     }
 
     @Override

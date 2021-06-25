@@ -1,8 +1,8 @@
 package com.carlos.stellarControl.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,21 +22,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 public class MainMensajes extends AppCompatActivity {
+    Intent intent;
     private RecyclerView rvMensajes;
     private AdapterMensajes adaptadorMensajes;
-    private Button btnEspionaje, btnInformes, btnInformeFlota, btnInformeAlianza, btnIncidencias;
     Query query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mensajes);
-
-        //Variables extras
-
-
-
-        // Fin variables extras
 
         //Variables globales
 
@@ -45,30 +39,22 @@ public class MainMensajes extends AppCompatActivity {
 
         Global.settings = (ImageView) findViewById(R.id.imgSettings);
         Global.imgBack = (ImageView) findViewById(R.id.imgBack);
+        Global.imgPlanetaSeleccionado = (ImageView) findViewById(R.id.imgPlanetaSeleccionado);
 
         Global.tvMetal = (TextView) findViewById(R.id.tvMetal);
         Global.tvCristal = (TextView) findViewById(R.id.tvCristal);
         Global.tvDeuterio = (TextView) findViewById(R.id.tvDeuterio);
+        Global.tvEnergia = (TextView) findViewById(R.id.tvEnergia);
         Global.tvPlaneta = (TextView) findViewById(R.id.tvPlaneta);
         Global.tvCoordenadas = (TextView) findViewById(R.id.tvCoordenadas);
         Global.listPlanetas = (LinearLayout) findViewById(R.id.listPlanetas);
 
         //Fin variables globales
 
-        //Variables locales
-
-        btnEspionaje = (Button) findViewById(R.id.btnEspionaje);
-        btnInformes = (Button) findViewById(R.id.btnInformes);
-        btnInformeFlota = (Button) findViewById(R.id.btnInformeFlota);
-        btnInformeAlianza = (Button) findViewById(R.id.btnInformeAlianza);
-        btnIncidencias = (Button) findViewById(R.id.btnIncidencias);
-
-        //Fin variables locales
-
         rvMensajes = findViewById(R.id.rvMensajes);
         rvMensajes.setLayoutManager(new LinearLayoutManager(this));
 
-        query = Global.fFirestore.collection("Mensajes").whereEqualTo("destinatario", Global.fAuth.getCurrentUser().getUid());
+        query = Global.fFirestore.collection("Mensajes").document(Global.fAuth.getCurrentUser().getUid()).collection("Mensajes_Jugador");
 
         FirestoreRecyclerOptions<Mensaje> firestoreRecyclerOptions = new FirestoreRecyclerOptions.Builder<Mensaje>().setQuery(query, Mensaje.class).build();
 
@@ -96,41 +82,6 @@ public class MainMensajes extends AppCompatActivity {
                 Global.desplegarPlanetas(MainMensajes.this, new AlertDialog.Builder(MainMensajes.this));
             }
         });
-
-        btnEspionaje.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        btnInformes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        btnInformeFlota.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        btnInformeAlianza.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        btnIncidencias.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
     @Override
@@ -143,7 +94,7 @@ public class MainMensajes extends AppCompatActivity {
         Global.mostrarPlanetaSeleccionado(Global.fFirestore.collection("Planetas").document(Global.fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador").whereEqualTo("nombre",Global.planetaSeleccionado));
 
         //Cargar los planetas en el selector
-        Global.cargarPlanetas();
+        Global.cargarSelectPlanetas();
     }
 
     @Override

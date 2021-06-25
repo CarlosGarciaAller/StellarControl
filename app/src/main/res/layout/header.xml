@@ -155,12 +155,11 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/imageView8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/imgPlanetaSeleccionado"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
-            android:background="@drawable/mars"
-            app:srcCompat="@drawable/mars" />
+            android:scaleType="fitXY" />
 
         <TableLayout
             android:layout_width="wrap_content"

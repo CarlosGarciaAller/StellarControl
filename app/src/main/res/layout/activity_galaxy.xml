@@ -8,9 +8,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="vertical">
 
-        <include layout="@layout/header"/>
+        <include layout="@layout/header" />
 
         <TableRow
             android:layout_width="match_parent"
@@ -24,44 +25,83 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/gradient"
                 android:gravity="center"
-                android:text="@string/sistema" />
+                android:text="@string/sistema"
+                android:textSize="24sp" />
 
         </TableRow>
 
-        <TableLayout
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:background="@drawable/gradient">
+            android:background="@drawable/gradient"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:gravity="center">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/imgAnteriorSistema"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    app:srcCompat="@drawable/arrow_right" />
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/arrow_left" />
+            </RelativeLayout>
 
-                <EditText
-                    android:id="@+id/etSistema"
-                    android:layout_width="60dp"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:maxLength="2" />
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <EditText
+                        android:id="@+id/etSistema"
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/botton"
+                        android:ems="10"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:maxLength="2" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/gradient"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/btnViajar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/draw_button"
+                        android:text="@string/viajar" />
+
+                </TableRow>
+
+            </TableLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/imgSiguienteSistema"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    app:srcCompat="@drawable/arrow_left" />
-            </TableRow>
-        </TableLayout>
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/arrow_right" />
+            </RelativeLayout>
+
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"

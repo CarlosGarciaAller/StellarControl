@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,7 +24,6 @@ public class MainLogin extends AppCompatActivity {
     FirebaseFirestore fFirestore;
     Query query;
     EditText etEmailLogin, etPasswordLogin;
-    TextView tvForgotPass;
     Button btnLogin;
     Intent intent;
 
@@ -39,7 +37,6 @@ public class MainLogin extends AppCompatActivity {
         etEmailLogin = (EditText) findViewById(R.id.etEmailLogin);
         etPasswordLogin = (EditText) findViewById(R.id.etPasswordLogin);
         btnLogin = (Button) findViewById(R.id.btnLogin);
-        tvForgotPass = (TextView) findViewById(R.id.tvForgotPass);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,10 +63,7 @@ public class MainLogin extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             intent = new Intent(MainLogin.this, MainLoading.class);
-                            /*intent = new Intent(MainLogin.this, MainGeneral.class);
-                            intent.putExtra("anteriorActividad", "login");
-                            intent.putExtra("nombrePlaneta", Global.planetaSeleccionado);*/
-
+                            intent.putExtra("anteriorActividad", "registrar");
                             startActivity(intent);
                         } else {
                             Toast.makeText(MainLogin.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();

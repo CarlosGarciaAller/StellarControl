@@ -12,6 +12,26 @@
 
         <include layout="@layout/header" />
 
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vision general - "
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/tvVisionPlaneta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp" />
+        </TableRow>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -20,10 +40,9 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/imageView12"
+                android:id="@+id/imgVisionPlaneta"
                 android:layout_width="400px"
-                android:layout_height="400px"
-                app:srcCompat="@drawable/planet1" />
+                android:layout_height="400px" />
 
             <TableLayout
                 android:layout_width="wrap_content"
@@ -31,14 +50,28 @@
                 android:gravity="center">
 
                 <TableRow
+                    android:id="@+id/trCambiarNombre"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center">
+                    android:visibility="gone">
 
-                    <TextView
-                        android:id="@+id/tvVisionPlaneta"
+                    <EditText
+                        android:id="@+id/etRenombrarPlaneta"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:maxLength="15"
+                        android:textSize="14sp"
+                        android:visibility="visible" />
+
+                    <Button
+                        android:id="@+id/btnCambiar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/draw_button"
+                        android:text="Cambiar" />
+
                 </TableRow>
 
                 <TableRow

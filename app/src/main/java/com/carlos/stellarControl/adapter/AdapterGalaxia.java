@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -25,6 +24,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.squareup.picasso.Picasso;
 
 public class AdapterGalaxia extends FirestoreRecyclerAdapter<Planeta, AdapterGalaxia.ViewHolder> {
     /**
@@ -45,14 +45,13 @@ public class AdapterGalaxia extends FirestoreRecyclerAdapter<Planeta, AdapterGal
     protected void onBindViewHolder(@NonNull AdapterGalaxia.ViewHolder holder, int position, @NonNull Planeta planeta) {
         holder.nombre.setText(planeta.getNombre());
         holder.posicion.setText(String.valueOf(planeta.getPosicion()));
+        Picasso.get().load(planeta.getImagen()).into(holder.imgGalaxyPlanet);
         if (planeta.getUsuario() == null){
             holder.usuario.setText("");
         }
         else{
             holder.usuario.setText(String.valueOf(planeta.getUsuario()));
         }
-
-        Global.getUsuarioActual();
 
         docRef = Global.fFirestore.collection("Usuarios").document(Global.fAuth.getCurrentUser().getUid());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>(){
@@ -82,7 +81,7 @@ public class AdapterGalaxia extends FirestoreRecyclerAdapter<Planeta, AdapterGal
     public class ViewHolder extends RecyclerView.ViewHolder {
         EditText cantidad;
         TextView nombre, posicion, usuario;
-        ImageView imgDesplegarPlaneta;
+        ImageView imgDesplegarPlaneta, imgGalaxyPlanet;
         String usuarioActual;
 
         public ViewHolder(@NonNull View itemView){
@@ -93,6 +92,7 @@ public class AdapterGalaxia extends FirestoreRecyclerAdapter<Planeta, AdapterGal
             this.posicion = itemView.findViewById(R.id.tvPosicionPlaneta);
             this.usuario = itemView.findViewById(R.id.tvNombreJugador);
             this.imgDesplegarPlaneta = itemView.findViewById(R.id.imgDesplegarPlaneta);
+            this.imgGalaxyPlanet = itemView.findViewById(R.id.imgGalaxyPlanet);
 
             itemView.findViewById(R.id.imgDesplegarPlaneta).setOnClickListener(new View.OnClickListener() {
                 String[] listAcciones = new String[0];
@@ -100,7 +100,7 @@ public class AdapterGalaxia extends FirestoreRecyclerAdapter<Planeta, AdapterGal
                 public void onClick(View v){
                     AlertDialog.Builder mBuilder = new AlertDialog.Builder(v.getContext());
                     if (!usuario.getText().toString().equals(" ")) {
-                        listAcciones = new String[] {"Espiar","Atacar","Agregar"};
+                        listAcciones = new String[] {"Espiar","Atacar"};
                     }
                     else{
                         listAcciones = new String[] {"Colonizar"};
@@ -111,15 +111,9 @@ public class AdapterGalaxia extends FirestoreRecyclerAdapter<Planeta, AdapterGal
                     mBuilder.setItems(listAcciones, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int i) {
-                            if (listAcciones[i]=="Colonizar" || listAcciones[i]=="Atacar"){
+                            if (listAcciones[i] == "Colonizar" || listAcciones[i] == "Atacar"){
                                 intent = new Intent(v.getContext(), MainFlota.class);
                                 v.getContext().startActivity(intent);
-                            }
-                            if(listAcciones[i]=="Espiar"){
-                                Toast.makeText(v.getContext(), "espiar", Toast.LENGTH_SHORT).show();
-                            }
-                            if(listAcciones[i]=="Agregar"){
-                                Toast.makeText(v.getContext(), "agregar", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

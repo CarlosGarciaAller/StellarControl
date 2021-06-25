@@ -32,21 +32,38 @@
                 android:gravity="center">
 
                 <TextView
+                    android:id="@+id/tvNaveFlota"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center" />
+
+                <TextView
                     android:id="@+id/tvCantidadNave"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center" />
 
-                <EditText
-                    android:id="@+id/etCantidadEnviar"
+                <ImageView
+                    android:id="@+id/imgReducir"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:srcCompat="@drawable/arrow_left" />
+
+                <TextView
+                    android:id="@+id/tvCantidadEnviar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/botton"
-                    android:ems="10"
-                    android:gravity="center"
-                    android:hint="0"
-                    android:inputType="number" />
+                    android:layout_weight="1"
+                    android:gravity="center" />
+
+                <ImageView
+                    android:id="@+id/imgIncrementar"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/arrow_right" />
 
                 <ImageView
                     android:id="@+id/imgDeleteAll"
@@ -60,7 +77,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:scaleType="fitXY"
-                    app:srcCompat="@drawable/arrow_left" />
+                    app:srcCompat="@drawable/all" />
             </TableRow>
 
         </TableLayout>

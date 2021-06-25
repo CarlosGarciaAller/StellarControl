@@ -3,6 +3,7 @@ package com.carlos.stellarControl.model;
 public class Planeta {
     private String usuario;
     private String nombre;
+    private String imagen;
     private int diametro;
     private int posicion;
     private int sistema;
@@ -12,9 +13,10 @@ public class Planeta {
 
     }
 
-    public Planeta(String usuario, String nombre, int diametro, int posicion, int sistema, boolean colonia) {
+    public Planeta(String usuario, String nombre, String imagen, int diametro, int posicion, int sistema, boolean colonia) {
         this.usuario = usuario;
         this.nombre = nombre;
+        this.imagen = imagen;
         this.diametro = diametro;
         this.posicion = posicion;
         this.sistema = sistema;
@@ -33,9 +35,18 @@ public class Planeta {
         return nombre;
     }
 
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
 
     public int getDiametro() {
         return diametro;

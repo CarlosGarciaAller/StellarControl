@@ -3,6 +3,7 @@ package com.carlos.stellarControl.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,7 +20,6 @@ import com.carlos.stellarControl.model.Planeta;
 import com.carlos.stellarControl.utils.Global;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -27,12 +27,11 @@ public class MainGalaxia extends AppCompatActivity {
     private RecyclerView rvGalaxia;
     private AdapterGalaxia adaptadorGalaxia;
     Intent intent;
-    String sistemaSeleccionado, anteriorActividad;
-    Integer sistema;
+    String anteriorActividad;
     Query query;
-    DocumentReference docRef;
     EditText etSistema;
     ImageView imgAnteriorSistema, imgSiguienteSistema;
+    Button btnViajar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +53,15 @@ public class MainGalaxia extends AppCompatActivity {
         Global.mensajes = (ImageView) findViewById(R.id.imgMensajes);
         Global.settings = (ImageView) findViewById(R.id.imgSettings);
         Global.imgBack = (ImageView) findViewById(R.id.imgBack);
+        Global.imgPlanetaSeleccionado = (ImageView) findViewById(R.id.imgPlanetaSeleccionado);
 
-        Global.tvMetal = (TextView)findViewById(R.id.tvMetal);
-        Global.tvCristal = (TextView)findViewById(R.id.tvCristal);
-        Global.tvDeuterio = (TextView)findViewById(R.id.tvDeuterio);
-        Global.tvPlaneta = (TextView)findViewById(R.id.tvPlaneta);
-        Global.tvCoordenadas = (TextView)findViewById(R.id.tvCoordenadas);
-        Global.listPlanetas = (LinearLayout)findViewById(R.id.listPlanetas);
+        Global.tvMetal = (TextView) findViewById(R.id.tvMetal);
+        Global.tvCristal = (TextView) findViewById(R.id.tvCristal);
+        Global.tvDeuterio = (TextView) findViewById(R.id.tvDeuterio);
+        Global.tvEnergia = (TextView) findViewById(R.id.tvEnergia);
+        Global.tvPlaneta = (TextView) findViewById(R.id.tvPlaneta);
+        Global.tvCoordenadas = (TextView) findViewById(R.id.tvCoordenadas);
+        Global.listPlanetas = (LinearLayout) findViewById(R.id.listPlanetas);
 
         //Fin variables globales
 
@@ -68,12 +69,13 @@ public class MainGalaxia extends AppCompatActivity {
         imgAnteriorSistema = (ImageView)findViewById(R.id.imgAnteriorSistema);
         imgSiguienteSistema = (ImageView)findViewById(R.id.imgSiguienteSistema);
 
+        btnViajar = (Button)findViewById(R.id.btnViajar);
+
         if (anteriorActividad.equals("general")){
             etSistema.setText(""+Global.sistemaSeleccionado);
         }
         if (anteriorActividad.equals("galaxia")){
             etSistema.setText(""+extras.getInt("sistema"));
-            //Toast.makeText(MainGalaxia.this, extras.getInt("sistema"), Toast.LENGTH_SHORT).show();
         }
 
         rvGalaxia = findViewById(R.id.rvGalaxia);
@@ -121,12 +123,12 @@ public class MainGalaxia extends AppCompatActivity {
             public void onClick(View v) {
                Integer anteriorSistema = Integer.parseInt(etSistema.getText().toString()) -1;
                Global.sistemaSeleccionado = anteriorSistema;
-                //Toast.makeText(MainGalaxia.this, anteriorSistema, Toast.LENGTH_SHORT).show();
-                intent = getIntent();
-                intent.putExtra("anteriorActividad", "galaxia");
-                intent.putExtra("sistema", anteriorSistema);
-                finish();
-                startActivity(intent);
+               //Toast.makeText(MainGalaxia.this, anteriorSistema, Toast.LENGTH_SHORT).show();
+               intent = getIntent();
+               intent.putExtra("anteriorActividad", "galaxia");
+               intent.putExtra("sistema", anteriorSistema);
+               finish();
+               startActivity(intent);
             }
         });
 
@@ -134,6 +136,19 @@ public class MainGalaxia extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Integer siguienteSistema = Integer.parseInt(etSistema.getText().toString()) +1;
+                Global.sistemaSeleccionado = siguienteSistema;
+                intent = getIntent();
+                intent.putExtra("anteriorActividad", "galaxia");
+                intent.putExtra("sistema", siguienteSistema);
+                finish();
+                startActivity(intent);
+            }
+        });
+
+        btnViajar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Integer siguienteSistema = Integer.parseInt(etSistema.getText().toString());
                 Global.sistemaSeleccionado = siguienteSistema;
                 intent = getIntent();
                 intent.putExtra("anteriorActividad", "galaxia");

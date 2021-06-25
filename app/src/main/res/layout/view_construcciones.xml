@@ -66,14 +66,6 @@
                 android:layout_marginRight="5dp"
                 app:srcCompat="@drawable/help" />
 
-            <ImageView
-                android:id="@+id/imgRequisitos"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="5dp"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/requisitos" />
-
         </TableRow>
 
         <LinearLayout
@@ -236,12 +228,29 @@
                     android:gravity="center">
 
                     <Button
-                        android:id="@+id/btnConstruir"
+                        android:id="@+id/btnMejorar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/draw_button"
                         android:text="@string/mejorar"
-                        android:typeface="normal" />
+                        android:typeface="normal"
+                        android:visibility="visible" />
+
+                    <Button
+                        android:id="@+id/btnConstruir"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/draw_button"
+                        android:text="@string/construir"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btnInvestigar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/draw_button"
+                        android:text="@string/investigar"
+                        android:visibility="gone" />
 
                 </TableRow>
 
@@ -255,8 +264,7 @@
                         android:id="@+id/btnDemoler"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/red_button"
-                        android:text="@string/demoler" />
+                        android:background="@drawable/red_button" />
                 </TableRow>
 
             </TableLayout>

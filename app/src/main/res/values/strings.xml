@@ -5,7 +5,7 @@
     <string name="register">Registrarse</string>
     <string name="about">Acerca De</string>
     <string name="email">Email</string>
-    <string name="user">Usuario</string>
+    <string name="user">Usuario - </string>
     <string name="password">Contraseña</string>
     <string name="emailRequired">Email Requerido</string>
     <string name="passwordRequired">Contraseña Requerida</string>
@@ -38,8 +38,8 @@
     <string name="registrarUsuario">¿Eres nuevo?</string>
     <string name="cantidadConstruccion">Cantidad:</string>
     <string name="nivel">Nivel:</string>
-    <string name="diametro">Diametro:</string>
-    <string name="posicion">Posicion:</string>
+    <string name="diametro">Diametro: </string>
+    <string name="posicion">Posicion: </string>
     <string name="temperatura">Temperatura:</string>
     <string name="renombrar">Cambiar nombre</string>
     <string name="abandonar">Abandonar planeta</string>
@@ -57,4 +57,11 @@
     <string name="informes">Informes de batalla</string>
     <string name="flota">Flota</string>
     <string name="incidencias">Incidencias</string>
+    <string name="enviarPara">Nuevo mensaje</string>
+    <string name="canal">Canal de comunicación</string>
+    <string name="viajar">Viajar</string>
+    <string name="forjarAlianza">Crea tu propia alianza</string>
+    <string name="construir">Construir</string>
+    <string name="investigar">Investigar</string>
+    <string name="mision">Mision: </string>
 </resources>

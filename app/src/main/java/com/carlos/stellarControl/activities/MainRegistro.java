@@ -30,7 +30,6 @@ public class MainRegistro extends AppCompatActivity {
     EditText etUserRegister, etEmailRegister, etPassRegister;
     Button btnRegister;
     String usuario, email, password, idPlaneta;
-    //Global global = new Global();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,11 +42,6 @@ public class MainRegistro extends AppCompatActivity {
         etEmailRegister = (EditText) findViewById(R.id.etEmailRegister);
         etPassRegister = (EditText) findViewById(R.id.etPassRegister);
         btnRegister = (Button) findViewById(R.id.btnRegister);
-
-        /*if (fAuth.getCurrentUser()!= null){
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            finish();
-        }*/
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,15 +72,26 @@ public class MainRegistro extends AppCompatActivity {
                             int sistemaPlaneta = aleatorio.nextInt(99 - 1 + 1) + 1;
                             int posicionSistema = aleatorio.nextInt(9 - 1 + 1) + 1;
                             idPlaneta = fFirestore.collection("Planetas").document(fAuth.getUid()).collection("Planetas_Jugador").document().getId();
+
                             crearUsuario();
-                            Global.asignarPlaneta(fAuth, fFirestore, idPlaneta, "Planeta principal", 200, 100, 50, sistemaPlaneta, posicionSistema, false);
+
+                            //Mensaje
+
+                            String asunto = "Bienvenido a StellarControl";
+                            String categoria = "Comunicación";
+                            String mensaje = "Te damos la bienvenida a StellarControl";
+                            String remitente = "Equipo de StellarControl";
+                            Global.crearMensaje(fFirestore, fAuth.getUid(), asunto, categoria, mensaje, remitente);
+
+                            //Fin mensaje
+
+                            Global.asignarPlaneta(fAuth, fFirestore, idPlaneta, "Planeta principal", usuario,2000, 1000, 500, sistemaPlaneta, posicionSistema, false);
                             Global.inicializarRecursosPlaneta(fFirestore, idPlaneta);
                             Global.inicializarInstalacionesPlaneta(fFirestore, idPlaneta);
                             Global.inicializarInvestigacionesJugador(fAuth, fFirestore);
                             Global.inicializarNavesPlaneta(fFirestore, idPlaneta);
                             Global.inicializarDefensasPlaneta(fFirestore, idPlaneta);
-                            Global.mostrarPlanetaSeleccionado(fFirestore.collection("Planetas").document(fAuth.getUid()).collection("Planetas_Jugador").whereEqualTo("colonia",false));
-                            intent = new Intent(MainRegistro.this, MainGeneral.class);
+                            intent = new Intent(MainRegistro.this, MainLoading.class);
                             intent.putExtra("login", "login");
                             intent.putExtra("anteriorActividad", "registrar");
                             Toast.makeText(MainRegistro.this, "Bienvenido!", Toast.LENGTH_SHORT).show();

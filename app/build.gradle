@@ -39,6 +39,7 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-firestore:7.1.1'
 
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.google.firebase:firebase-database:20.0.0'
 
     testImplementation 'junit:junit:4.+'
 

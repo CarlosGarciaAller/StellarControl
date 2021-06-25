@@ -36,7 +36,8 @@
             android:layout_marginBottom="5dp"
             android:ems="10"
             android:hint="@string/nombre"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:maxLength="15" />
 
         <EditText
             android:id="@+id/etEmailRegister"

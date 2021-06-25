@@ -24,16 +24,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 public class MainUsuario extends AppCompatActivity {
     private TextView tvNombre, tvEmail;
-    private EditText etNombreUsuario, etPassword;
-    private Button btnCambiarNombre, btnCambiarContraseña, btnBaja;
+    private EditText etRenombrarUsuario, etCambiarContraseña;
+    private Button btnAplicar, btnBaja;
     Intent intent;
-    Query query;
-    Global global = new Global();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +45,12 @@ public class MainUsuario extends AppCompatActivity {
         Global.mensajes = (ImageView) findViewById(R.id.imgMensajes);
         Global.settings = (ImageView) findViewById(R.id.imgSettings);
         Global.imgBack = (ImageView) findViewById(R.id.imgBack);
+        Global.imgPlanetaSeleccionado = (ImageView) findViewById(R.id.imgPlanetaSeleccionado);
 
         Global.tvMetal = (TextView) findViewById(R.id.tvMetal);
         Global.tvCristal = (TextView) findViewById(R.id.tvCristal);
         Global.tvDeuterio = (TextView) findViewById(R.id.tvDeuterio);
+        Global.tvEnergia = (TextView) findViewById(R.id.tvEnergia);
         Global.tvPlaneta = (TextView) findViewById(R.id.tvPlaneta);
         Global.tvCoordenadas = (TextView) findViewById(R.id.tvCoordenadas);
         Global.listPlanetas = (LinearLayout) findViewById(R.id.listPlanetas);
@@ -62,16 +61,16 @@ public class MainUsuario extends AppCompatActivity {
 
         tvNombre = (TextView) findViewById(R.id.tvNombre);
         tvEmail = (TextView) findViewById(R.id.tvEmail);
-        btnCambiarNombre = (Button) findViewById(R.id.btnCambiarNombre);
-        btnCambiarContraseña = (Button) findViewById(R.id.btnCambiarContraseña);
+        btnAplicar = (Button) findViewById(R.id.btnAplicar);
         btnBaja = (Button) findViewById(R.id.btnBaja);
 
-        etNombreUsuario = new EditText(MainUsuario.this);
-        etPassword = new EditText(MainUsuario.this);
+        etRenombrarUsuario = (EditText) findViewById(R.id.etRenombrarUsuario);
+        etCambiarContraseña = (EditText) findViewById(R.id.etCambiarContraseña);
 
         //Fin variables locales
         //String pass = FirebaseAuth.getInstance().getCurrentUser().get;
 
+        tvNombre.setText(Global.usuarioActual);
         tvEmail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
         Toast.makeText(MainUsuario.this, Global.idPlanetaSeleccionado, Toast.LENGTH_SHORT).show();
@@ -87,6 +86,7 @@ public class MainUsuario extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 intent = new Intent(MainUsuario.this, MainMensajes.class);
+                intent.putExtra("categoria", "Consulta");
                 startActivity(intent);
             }
         });
@@ -106,66 +106,29 @@ public class MainUsuario extends AppCompatActivity {
             }
         });
 
-        btnCambiarNombre.setOnClickListener(new View.OnClickListener() {
+        btnAplicar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!etRenombrarUsuario.getText().toString().isEmpty()) {
+                    Global.fFirestore.collection("Usuarios").document(Global.fAuth.getCurrentUser().getUid()).update("nombre", etRenombrarUsuario.getText().toString());
+                    intent = new Intent(MainUsuario.this, MainUsuario.class);
+                    Toast.makeText(MainUsuario.this, "Cambio de nombre realizado correctamente", Toast.LENGTH_SHORT).show();
+                    startActivity(intent);
+                }
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainUsuario.this);
 
-                mBuilder.setTitle("Introduzca un nuevo nombre de usuario");
-                mBuilder.setIcon(R.drawable.icon);
-                mBuilder.setView(etNombreUsuario);
-                mBuilder.setPositiveButton("Cambiar", new DialogInterface.OnClickListener() {
+                FirebaseAuth.getInstance().getCurrentUser().updatePassword(etCambiarContraseña.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        global.fFirestore.collection("Usuarios").document(Global.fAuth.getCurrentUser().getUid()).update("nombre", etNombreUsuario.getText().toString());
-                        dialog.cancel();
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            intent = new Intent(MainUsuario.this, MainLogin.class);
+                            Toast.makeText(MainUsuario.this, "Password update", Toast.LENGTH_SHORT).show();
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(MainUsuario.this, "Password could not be changed", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
-                mBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                AlertDialog mDialog = mBuilder.create();
-                mDialog.show();
-            }
-        });
-
-        btnCambiarContraseña.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainUsuario.this);
-
-                mBuilder.setTitle("Introduzca una contraseña nueva");
-                mBuilder.setMessage("Volvera a la pantalla de inicio de sesión para que los cambios se apliquen");
-                mBuilder.setIcon(R.drawable.icon);
-                mBuilder.setView(etPassword);
-                mBuilder.setPositiveButton("Cambiar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        FirebaseAuth.getInstance().getCurrentUser().updatePassword(etPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    intent = new Intent(MainUsuario.this, MainLogin.class);
-                                    Toast.makeText(MainUsuario.this, "Password update", Toast.LENGTH_SHORT).show();
-                                    startActivity(intent);
-                                } else {
-                                    Toast.makeText(MainUsuario.this, "Password could not be changed", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    }
-                });
-                mBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                AlertDialog mDialog = mBuilder.create();
-                mDialog.show();
             }
         });
 
@@ -202,7 +165,11 @@ public class MainUsuario extends AppCompatActivity {
 
                             }
                         });
+                        Global.fFirestore.collection("Mensajes").document(Global.fAuth.getCurrentUser().getUid()).delete();
                         Global.fFirestore.collection("Usuarios").document(Global.fAuth.getCurrentUser().getUid()).delete();
+
+                        intent = new Intent(MainUsuario.this, MainLoading.class);
+                        startActivity(intent);
                     }
                 });
                 mBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -225,7 +192,8 @@ public class MainUsuario extends AppCompatActivity {
         Global.mostrarPlanetaSeleccionado(Global.fFirestore.collection("Planetas").document(Global.fAuth.getCurrentUser().getUid()).collection("Planetas_Jugador").whereEqualTo("nombre",Global.planetaSeleccionado));
 
         //Cargar los planetas del jugador en el selector
-        Global.cargarPlanetas();
+        Global.cargarSelectPlanetas();
+
     }
 
     @Override
@@ -243,7 +211,7 @@ public class MainUsuario extends AppCompatActivity {
             }
         });
         //Global.fAuth.signOut();
-        intent = new Intent(MainUsuario.this, MainActivity.class);
+        intent = new Intent(MainUsuario.this, MainLoading.class);
         startActivity(intent);
     }
 }
